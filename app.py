@@ -563,7 +563,10 @@ def about():
     return render_template('about.html')
 
 @app.route('/documentation')
+@admin_required
 def documentation():
+    # Page technique reservee a l'administrateur : non listee dans les menus
+    # publics.
     return render_template('documentation.html')
 
 @app.route('/history')
