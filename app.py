@@ -1296,11 +1296,19 @@ def init_db():
     with app.app_context():
         db.create_all()
         if not Admin.query.filter_by(username='admin').first():
+            # En production, definir ADMIN_PASSWORD dans les variables
+            # d'environnement (Render : onglet Environment). Le mot de passe
+            # par defaut n'est utilise qu'en developpement local.
+            admin_password = os.environ.get('ADMIN_PASSWORD', 'admin123')
             admin = Admin(username='admin', email='admin@creditscore.pro')
-            admin.set_password('admin123')
+            admin.set_password(admin_password)
             db.session.add(admin)
             db.session.commit()
-            print('✅ Admin créé : admin / admin123')
+            if admin_password == 'admin123':
+                print('✅ Admin créé : admin / admin123 (mot de passe par défaut, DEV uniquement)')
+                print('⚠️  En production, définissez la variable d\'environnement ADMIN_PASSWORD.')
+            else:
+                print('✅ Admin créé avec le mot de passe défini par ADMIN_PASSWORD.')
         print('✅ Base de données initialisée.')
 
 

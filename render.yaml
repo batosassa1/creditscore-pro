@@ -12,3 +12,14 @@ services:
         value: 3.12.10
       - key: SECRET_KEY
         generateValue: true
+      # Mot de passe du compte admin (a definir dans le tableau de bord Render,
+      # onglet Environment : jamais dans le code)
+      - key: ADMIN_PASSWORD
+        sync: false
+      # Envoi de vrais emails (mot de passe oublie) : renseigner un compte Gmail
+      # et un "mot de passe d'application" Google (voir README.md). Optionnel :
+      # sans ces variables, l'app reste en mode demo (lien affiche a l'ecran).
+      - key: MAIL_USERNAME
+        sync: false
+      - key: MAIL_PASSWORD
+        sync: false
