@@ -1,0 +1,59 @@
+{% extends "base.html" %}
+{% block title %}Mes Messages - CreditScore Pro{% endblock %}
+{% block content %}
+<section class="tickets-section">
+    <div class="container">
+        <div class="page-header">
+            <h1><i class="fas fa-envelope"></i> Mes messages au support</h1>
+            <a href="{{ url_for('dashboard') }}" class="btn btn-secondary">
+                <i class="fas fa-arrow-left"></i> Retour au Dashboard
+            </a>
+        </div>
+        <div class="tickets-list">
+            {% for ticket in tickets %}
+            <div class="ticket-card glass {{ 'resolved' if ticket.status == 'closed' else 'pending' }}">
+                <div class="ticket-header">
+                    <span class="ticket-id">#{{ ticket.id }}</span>
+                    <strong>{{ ticket.subject }}</strong>
+                    <span class="ticket-date">{{ ticket.created_at.strftime('%d/%m/%Y %H:%M') }}</span>
+                    <span class="badge {{ 'badge-success' if ticket.status == 'closed' else 'badge-warning' }}">
+                        {{ 'Répondu' if ticket.status == 'closed' else 'En attente' }}
+                    </span>
+                </div>
+                <p style="margin:10px 0;color:var(--text-secondary)">{{ ticket.message }}</p>
+                {% if ticket.reply %}
+                <div class="reply-box">
+                    <strong><i class="fas fa-reply"></i> Réponse de l'équipe :</strong>
+                    <p>{{ ticket.reply }}</p>
+                    <small>{{ ticket.replied_at.strftime('%d/%m/%Y %H:%M') }}</small>
+                </div>
+                {% endif %}
+            </div>
+            {% else %}
+            <div style="text-align:center;padding:60px;color:var(--text-secondary)">
+                <i class="fas fa-envelope-open" style="font-size:4rem;display:block;margin-bottom:20px"></i>
+                <p>Aucun message envoyé pour l'instant.</p>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+<style>
+.tickets-section{padding:40px 20px;min-height:80vh;background:var(--bg-primary)}
+.page-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:30px}
+.page-header h1{color:var(--text-primary);font-family:var(--font-heading)}
+.tickets-list{display:flex;flex-direction:column;gap:20px}
+.ticket-card{padding:25px;border-radius:15px;transition:all .3s}
+.ticket-card.pending{border-left:5px solid var(--accent-primary)}
+.ticket-card.resolved{border-left:5px solid #8faf8f;opacity:.85}
+.ticket-header{display:flex;align-items:center;gap:15px;flex-wrap:wrap;margin-bottom:10px}
+.ticket-id{font-weight:700;color:var(--accent-primary)}
+.ticket-date{margin-left:auto;font-size:.85rem;color:var(--text-secondary)}
+.reply-box{background:rgba(143,175,143,.1);padding:15px;border-radius:10px;border:1px dashed #8faf8f;margin-top:15px}
+.badge{padding:4px 12px;border-radius:20px;font-size:.8rem;font-weight:600}
+.badge-success{background:#e8f5e9;color:#2e7d32}
+.badge-warning{background:#fff8e1;color:#f57f17}
+.btn{padding:10px 20px;border-radius:8px;border:none;font-weight:600;cursor:pointer;text-decoration:none;display:inline-flex;align-items:center;gap:8px;transition:all .3s}
+.btn-secondary{background:var(--bg-secondary);color:var(--text-primary)}
+</style>
+{% endblock %}

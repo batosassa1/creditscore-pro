@@ -1,0 +1,207 @@
+{% extends "base.html" %}
+
+{% block title %}CreditScore Pro - {% if lang == 'en' %}Check your credit eligibility{% else %}Évaluez votre éligibilité au crédit{% endif %}{% endblock %}
+
+{% block content %}
+<!-- Hero Section -->
+<section class="hero">
+    <div class="hero-particles" id="particles"></div>
+    <div class="container">
+        <div class="hero-content" data-aos="fade-up">
+            <h1 class="hero-title">
+                {% if lang == 'en' %}
+                    Discover your credit eligibility
+                    <span class="highlight">in just minutes</span>
+                {% else %}
+                    Découvrez votre éligibilité au crédit
+                    <span class="highlight">en quelques minutes</span>
+                {% endif %}
+            </h1>
+            <p class="hero-subtitle">
+                {% if lang == 'en' %}
+                    Our artificial intelligence analyzes your financial profile and gives you
+                    an accurate credit score with personalized recommendations.
+                {% else %}
+                    Notre intelligence artificielle analyse votre profil financier et vous fournit
+                    un score de crédit précis avec des recommandations personnalisées.
+                {% endif %}
+            </p>
+            <div class="hero-cta">
+                <a href="/evaluation" class="btn btn-primary btn-animated">
+                    <i class="fas fa-rocket"></i>
+                    {% if lang == 'en' %}Evaluate my score{% else %}Évaluer mon score{% endif %}
+                </a>
+                <a href="/about" class="btn btn-secondary">
+                    {% if lang == 'en' %}Learn more{% else %}En savoir plus{% endif %}
+                </a>
+            </div>
+
+            <div class="hero-stats">
+                <div class="stat-item">
+                    <div class="stat-number" id="statTotalSimulations">0</div>
+                    <div class="stat-label">{% if lang == 'en' %}Simulations completed{% else %}Simulations réalisées{% endif %}</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number" id="statAvgScore">0</div>
+                    <div class="stat-label">{% if lang == 'en' %}Average score{% else %}Score moyen{% endif %}</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number" id="statApprovalRate">0%</div>
+                    <div class="stat-label">{% if lang == 'en' %}Approval rate{% else %}Taux d'approbation{% endif %}</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="hero-wave">
+        <svg viewBox="0 0 1440 120" xmlns="http://www.w3.org/2000/svg">
+            <path d="M0,64L48,69.3C96,75,192,85,288,80C384,75,480,53,576,48C672,43,768,53,864,64C960,75,1056,85,1152,80C1248,75,1344,53,1392,42.7L1440,32L1440,120L1392,120C1344,120,1248,120,1152,120C1056,120,960,120,864,120C768,120,672,120,576,120C480,120,384,120,288,120C192,120,96,120,48,120L0,120Z"></path>
+        </svg>
+    </div>
+</section>
+
+<!-- Comment ça marche -->
+<section class="how-it-works">
+    <div class="container">
+        <h2 class="section-title" data-aos="fade-up">
+            {% if lang == 'en' %}How does it work?{% else %}Comment ça marche ?{% endif %}
+        </h2>
+        <p class="section-subtitle" data-aos="fade-up" data-aos-delay="100">
+            {% if lang == 'en' %}Three simple steps to know your eligibility{% else %}Trois étapes simples pour connaître votre éligibilité{% endif %}
+        </p>
+
+        <div class="steps-grid">
+            <div class="step-card" data-aos="fade-up" data-aos-delay="200">
+                <div class="step-icon"><i class="fas fa-file-alt"></i></div>
+                <div class="step-number">1</div>
+                <h3>{% if lang == 'en' %}Fill out the form{% else %}Remplissez le formulaire{% endif %}</h3>
+                <p>
+                    {% if lang == 'en' %}
+                        Provide your financial and personal information securely.
+                    {% else %}
+                        Fournissez vos informations financières et personnelles
+                        en toute sécurité.
+                    {% endif %}
+                </p>
+            </div>
+
+            <div class="step-card" data-aos="fade-up" data-aos-delay="400">
+                <div class="step-icon"><i class="fas fa-brain"></i></div>
+                <div class="step-number">2</div>
+                <h3>{% if lang == 'en' %}Our AI analyzes your profile{% else %}Notre IA analyse votre profil{% endif %}</h3>
+                <p>
+                    {% if lang == 'en' %}
+                        Our advanced algorithm evaluates your profile across hundreds of criteria.
+                    {% else %}
+                        Notre algorithme avancé évalue votre profil selon
+                        des centaines de critères.
+                    {% endif %}
+                </p>
+            </div>
+
+            <div class="step-card" data-aos="fade-up" data-aos-delay="600">
+                <div class="step-icon"><i class="fas fa-chart-pie"></i></div>
+                <div class="step-number">3</div>
+                <h3>{% if lang == 'en' %}Get your result{% else %}Recevez votre résultat{% endif %}</h3>
+                <p>
+                    {% if lang == 'en' %}
+                        Instantly get your score and personalized recommendations.
+                    {% else %}
+                        Obtenez instantanément votre score et des
+                        recommandations personnalisées.
+                    {% endif %}
+                </p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Fonctionnalités -->
+<section class="features">
+    <div class="container">
+        <h2 class="section-title" data-aos="fade-up">
+            {% if lang == 'en' %}Our features{% else %}Nos fonctionnalités{% endif %}
+        </h2>
+        <p class="section-subtitle" data-aos="fade-up" data-aos-delay="100">
+            {% if lang == 'en' %}A complete solution for your credit evaluation{% else %}Une solution complète pour votre évaluation de crédit{% endif %}
+        </p>
+
+        <div class="features-grid">
+            <div class="feature-card" data-aos="fade-up" data-aos-delay="200">
+                <div class="feature-icon"><i class="fas fa-bolt"></i></div>
+                <h3>{% if lang == 'en' %}Instant analysis{% else %}Analyse instantanée{% endif %}</h3>
+                <p>
+                    {% if lang == 'en' %}
+                        Real-time results thanks to our optimized algorithm.
+                        No more waiting days for your evaluation.
+                    {% else %}
+                        Résultats en temps réel grâce à notre algorithme optimisé.
+                        Plus besoin d'attendre des jours pour votre évaluation.
+                    {% endif %}
+                </p>
+            </div>
+
+            <div class="feature-card" data-aos="fade-up" data-aos-delay="300">
+                <div class="feature-icon"><i class="fas fa-shield-alt"></i></div>
+                <h3>{% if lang == 'en' %}Data security{% else %}Sécurité des données{% endif %}</h3>
+                <p>
+                    {% if lang == 'en' %}
+                        Your information is encrypted and protected.
+                        We never share your data with third parties.
+                    {% else %}
+                        Vos informations sont cryptées et protégées.
+                        Nous ne partageons jamais vos données avec des tiers.
+                    {% endif %}
+                </p>
+            </div>
+
+            <div class="feature-card" data-aos="fade-up" data-aos-delay="400">
+                <div class="feature-icon"><i class="fas fa-lightbulb"></i></div>
+                <h3>{% if lang == 'en' %}Personalized recommendations{% else %}Recommandations personnalisées{% endif %}</h3>
+                <p>
+                    {% if lang == 'en' %}
+                        Receive advice tailored to your situation to improve your eligibility.
+                    {% else %}
+                        Recevez des conseils adaptés à votre situation
+                        pour améliorer votre éligibilité.
+                    {% endif %}
+                </p>
+            </div>
+
+            <div class="feature-card" data-aos="fade-up" data-aos-delay="500">
+                <div class="feature-icon"><i class="fas fa-chart-line"></i></div>
+                <h3>{% if lang == 'en' %}Detailed score{% else %}Score détaillé{% endif %}</h3>
+                <p>
+                    {% if lang == 'en' %}
+                        Visualize your score with interactive charts
+                        and understand every evaluation criterion.
+                    {% else %}
+                        Visualisez votre score avec des graphiques interactifs
+                        et comprenez chaque critère d'évaluation.
+                    {% endif %}
+                </p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- CTA Section -->
+<section class="cta-section">
+    <div class="container">
+        <div class="cta-content" data-aos="zoom-in">
+            <h2>{% if lang == 'en' %}Ready to discover your score?{% else %}Prêt à découvrir votre score ?{% endif %}</h2>
+            <p>
+                {% if lang == 'en' %}
+                    Join thousands of users who have already evaluated their eligibility
+                {% else %}
+                    Rejoignez des milliers d'utilisateurs qui ont déjà évalué leur éligibilité
+                {% endif %}
+            </p>
+            <a href="/evaluation" class="btn btn-primary btn-large">
+                <i class="fas fa-arrow-right"></i>
+                {% if lang == 'en' %}Start evaluation{% else %}Commencer l'évaluation{% endif %}
+            </a>
+        </div>
+    </div>
+</section>
+{% endblock %}

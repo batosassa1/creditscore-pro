@@ -1,0 +1,322 @@
+{% extends "base.html" %}
+
+{% block title %}Détail Utilisateur - {{ user.first_name }} {{ user.last_name }}{% endblock %}
+
+{% block content %}
+<section class="admin-user-detail-section">
+    <div class="container">
+        <div class="admin-header">
+            <div>
+                <h1><i class="fas fa-user"></i> Détails de l'Utilisateur</h1>
+                <p>Consultez le profil et l'historique de {{ user.first_name }} {{ user.last_name }}</p>
+            </div>
+            <div class="admin-actions">
+                <a href="{{ url_for('admin_users') }}" class="btn btn-secondary">
+                    <i class="fas fa-arrow-left"></i> Retour à la liste
+                </a>
+            </div>
+        </div>
+
+        <div class="user-detail-grid">
+            <!-- Profil Card -->
+            <div class="detail-card profile-card">
+                <div class="card-header">
+                    <h3>Informations Profil</h3>
+                </div>
+                <div class="card-body">
+                    <div class="profile-header">
+                        <div class="profile-avatar">
+                            {{ user.first_name[0] }}{{ user.last_name[0] }}
+                        </div>
+                        <div class="profile-info">
+                            <h2>{{ user.first_name }} {{ user.last_name }}</h2>
+                            <p><i class="fas fa-envelope"></i> {{ user.email }}</p>
+                            <p><i class="fas fa-phone"></i> {{ user.phone or 'Non renseigné' }}</p>
+                        </div>
+                    </div>
+                    <div class="profile-meta">
+                        <div class="meta-item">
+                            <span class="meta-label">Inscrit le</span>
+                            <span class="meta-value">{{ user.created_at.strftime('%d/%m/%Y') }}</span>
+                        </div>
+                        <div class="meta-item">
+                            <span class="meta-label">Dernière connexion</span>
+                            <span class="meta-value">{{ user.last_login.strftime('%d/%m/%Y %H:%M') if user.last_login else 'Jamais' }}</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Stats Card -->
+            <div class="detail-card stats-summary-card">
+                <div class="card-header">
+                    <h3>Statistiques</h3>
+                </div>
+                <div class="card-body">
+                    <div class="stats-mini-grid">
+                        <div class="stat-mini-item">
+                            <div class="stat-icon purple">
+                                <i class="fas fa-calculator"></i>
+                            </div>
+                            <div class="stat-mini-info">
+                                <h4>{{ simulations|length }}</h4>
+                                <p>Simulations</p>
+                            </div>
+                        </div>
+                        <div class="stat-mini-item">
+                            <div class="stat-icon green">
+                                <i class="fas fa-check"></i>
+                            </div>
+                            <div class="stat-mini-info">
+                                <h4>{{ simulations|selectattr('eligibility', 'equalto', 'approved')|list|length }}</h4>
+                                <p>Approuvées</p>
+                            </div>
+                        </div>
+                        <div class="stat-mini-item">
+                            <div class="stat-icon gold">
+                                <i class="fas fa-star"></i>
+                            </div>
+                            <div class="stat-mini-info">
+                                {% if simulations|length > 0 %}
+                                    <h4>{{ avg_score }}</h4>
+                                {% else %}
+                                    <h4>0</h4>
+                                {% endif %}
+                                <p>Score Moyen</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Simulations History -->
+        <div class="data-table-card">
+            <div class="card-header">
+                <h3>Historique des Simulations</h3>
+            </div>
+            <div class="table-responsive">
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Date</th>
+                            <th>Score</th>
+                            <th>Éligibilité</th>
+                            <th>Montant Prêt</th>
+                            <th>Max Accordé</th>
+                            <th>Statut Emploi</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for sim in simulations %}
+                        <tr>
+                            <td>#{{ sim.id }}</td>
+                            <td>{{ sim.created_at.strftime('%d/%m/%Y %H:%M') }}</td>
+                            <td>
+                                <span class="score-badge">{{ sim.score|round(1) }}</span>
+                            </td>
+                            <td>
+                                {% if sim.eligibility == 'approved' %}
+                                    <span class="badge badge-success">Approuvé</span>
+                                {% elif sim.eligibility == 'conditional' %}
+                                    <span class="badge badge-warning">Conditionnel</span>
+                                {% else %}
+                                    <span class="badge badge-danger">Rejeté</span>
+                                {% endif %}
+                            </td>
+                            <td>{{ sim.loan_amount|round(0)|int }} F CFA</td>
+                            <td>{{ sim.max_amount|round(0)|int }} F CFA</td>
+                            <td>{{ sim.employment_status }}</td>
+                        </tr>
+                        {% endfor %}
+                        {% if simulations|length == 0 %}
+                        <tr>
+                            <td colspan="7" style="text-align: center; padding: 30px; color: var(--text-secondary);">
+                                Aucune simulation effectuée par cet utilisateur.
+                            </td>
+                        </tr>
+                        {% endif %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</section>
+
+<style>
+.admin-user-detail-section {
+    padding: 40px 20px;
+    background: var(--bg-primary);
+    min-height: 100vh;
+}
+
+.user-detail-grid {
+    display: grid;
+    grid-template-columns: 1.5fr 1fr;
+    gap: 25px;
+    margin-bottom: 30px;
+}
+
+.detail-card {
+    background: white;
+    border-radius: 15px;
+    box-shadow: var(--shadow-md);
+    overflow: hidden;
+}
+
+.card-header {
+    padding: 20px 25px;
+    border-bottom: 1px solid #eee;
+}
+
+.card-header h3 {
+    font-family: var(--font-heading);
+    color: var(--text-primary);
+    margin: 0;
+}
+
+.card-body {
+    padding: 25px;
+}
+
+.profile-header {
+    display: flex;
+    align-items: center;
+    gap: 25px;
+    margin-bottom: 30px;
+}
+
+.profile-avatar {
+    width: 100px;
+    height: 100px;
+    background: var(--gradient-primary);
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2.5rem;
+    font-weight: 700;
+    box-shadow: var(--shadow-md);
+}
+
+.profile-info h2 {
+    font-family: var(--font-heading);
+    margin-bottom: 10px;
+}
+
+.profile-info p {
+    color: var(--text-secondary);
+    margin-bottom: 5px;
+}
+
+.profile-meta {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    padding-top: 20px;
+    border-top: 1px solid #eee;
+}
+
+.meta-item {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.meta-label {
+    font-size: 0.8rem;
+    color: var(--text-secondary);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.meta-value {
+    font-weight: 600;
+    color: var(--text-primary);
+}
+
+.stats-mini-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.stat-mini-item {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.stat-icon {
+    width: 50px;
+    height: 50px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2rem;
+    color: white;
+}
+
+.stat-icon.purple { background: #9c27b0; }
+.stat-icon.green { background: #4caf50; }
+.stat-icon.gold { background: #ffc107; }
+
+.stat-mini-info h4 {
+    margin: 0;
+    font-size: 1.4rem;
+}
+
+.stat-mini-info p {
+    margin: 0;
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+}
+
+.data-table-card {
+    background: white;
+    border-radius: 15px;
+    box-shadow: var(--shadow-md);
+    overflow: hidden;
+}
+
+.data-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.data-table th, .data-table td {
+    padding: 15px;
+    text-align: left;
+    border-bottom: 1px solid #eee;
+}
+
+.score-badge {
+    background: var(--accent-primary);
+    color: white;
+    padding: 4px 10px;
+    border-radius: 20px;
+    font-weight: 600;
+    font-size: 0.9rem;
+}
+
+.badge {
+    padding: 5px 12px;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    font-weight: 600;
+}
+
+.badge-success { background: #e8f5e9; color: #2e7d32; }
+.badge-warning { background: #fff8e1; color: #f57f17; }
+.badge-danger { background: #ffebee; color: #c62828; }
+
+@media (max-width: 992px) {
+    .user-detail-grid {
+        grid-template-columns: 1fr;
+    }
+}
+</style>
+{% endblock %}

@@ -1,0 +1,361 @@
+{% extends "base.html" %}
+
+{% block title %}Documentation - CreditScore Pro{% endblock %}
+
+{% block content %}
+<!-- Documentation Hero -->
+<section class="documentation-hero">
+    <div class="container">
+        <div class="documentation-hero-content" data-aos="fade-up">
+            <h1>Documentation</h1>
+            <p>Guide complet pour utiliser CreditScore Pro</p>
+        </div>
+    </div>
+</section>
+
+<!-- Documentation Content -->
+<section class="documentation-section">
+    <div class="container">
+        
+        <!-- Table des Matières -->
+        <div class="toc-card" data-aos="fade-up">
+            <h2><i class="fas fa-book"></i> Table des Matières</h2>
+            <ul class="toc-list">
+                <li><a href="#introduction">1. Introduction</a></li>
+                <li><a href="#installation">2. Installation</a></li>
+                <li><a href="#utilisation">3. Utilisation</a></li>
+                <li><a href="#formulaire">4. Formulaire d'Évaluation</a></li>
+                <li><a href="#resultats">5. Résultats</a></li>
+                <li><a href="#historique">6. Historique</a></li>
+                <li><a href="#modele">7. Intégration du Modèle</a></li>
+                <li><a href="#api">8. API</a></li>
+                <li><a href="#faq">9. FAQ</a></li>
+            </ul>
+        </div>
+
+        <!-- Introduction -->
+        <div class="doc-section" id="introduction" data-aos="fade-up">
+            <h2><i class="fas fa-info-circle"></i> 1. Introduction</h2>
+            <p>
+                <strong>CreditScore Pro</strong> est une application web complète d'évaluation de crédit utilisant 
+                l'intelligence artificielle. Elle permet de :
+            </p>
+            <ul>
+                <li>Évaluer l'éligibilité au crédit d'un utilisateur</li>
+                <li>Calculer un score de crédit (0-100)</li>
+                <li>Déterminer le montant maximum empruntable</li>
+                <li>Fournir des recommandations personnalisées</li>
+                <li>Visualiser les résultats avec des graphiques interactifs</li>
+            </ul>
+            
+            <div class="info-box">
+                <i class="fas fa-lightbulb"></i>
+                <div>
+                    <strong>Technologie :</strong> Flask (Python) + HTML/CSS/JavaScript + Machine Learning
+                </div>
+            </div>
+        </div>
+
+        <!-- Installation -->
+        <div class="doc-section" id="installation" data-aos="fade-up">
+            <h2><i class="fas fa-download"></i> 2. Installation</h2>
+            
+            <h3>Prérequis</h3>
+            <ul>
+                <li>Python 3.11 ou 3.12 (le modèle ML exige scikit-learn 1.3.2, indisponible pour Python 3.13)</li>
+                <li>pip (gestionnaire de paquets Python)</li>
+            </ul>
+
+            <h3>Étapes d'Installation</h3>
+            <div class="code-block">
+                <code>
+# 1. Créer l'environnement virtuel (une seule fois)<br>
+py -3.12 -m venv .venv<br><br>
+# 2. Installer les dépendances (versions exactes)<br>
+.venv\Scripts\pip install -r requirements.txt<br><br>
+# 3. Lancer l'application<br>
+.venv\Scripts\python app.py
+                </code>
+            </div>
+
+            <p>
+                L'application sera accessible à : <a href="http://localhost:5000">http://localhost:5000</a>
+            </p>
+
+            <div class="tip-box">
+                <i class="fas fa-magic"></i>
+                <div>
+                    <strong>Astuce :</strong> Vous pouvez aussi double-cliquer sur le fichier <code>start.bat</code> pour lancer automatiquement l'application.
+                </div>
+            </div>
+        </div>
+
+        <!-- Utilisation -->
+        <div class="doc-section" id="utilisation" data-aos="fade-up">
+            <h2><i class="fas fa-rocket"></i> 3. Utilisation</h2>
+            
+            <h3>Structure de l'Application</h3>
+            <div class="feature-grid">
+                <div class="feature-item">
+                    <i class="fas fa-home"></i>
+                    <h4>Accueil</h4>
+                    <p>Page de présentation avec statistiques en temps réel</p>
+                </div>
+                <div class="feature-item">
+                    <i class="fas fa-info-circle"></i>
+                    <h4>À propos</h4>
+                    <p>Informations sur la technologie et le modèle</p>
+                </div>
+                <div class="feature-item">
+                    <i class="fas fa-calculator"></i>
+                    <h4>Évaluation</h4>
+                    <p>Formulaire multi-étapes pour soumettre votre profil</p>
+                </div>
+                <div class="feature-item">
+                    <i class="fas fa-chart-pie"></i>
+                    <h4>Résultats</h4>
+                    <p>Score, montants et recommandations</p>
+                </div>
+                <div class="feature-item">
+                    <i class="fas fa-history"></i>
+                    <h4>Historique</h4>
+                    <p>Tableau de bord avec toutes vos simulations</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Formulaire -->
+        <div class="doc-section" id="formulaire" data-aos="fade-up">
+            <h2><i class="fas fa-file-alt"></i> 4. Formulaire d'Évaluation</h2>
+            
+            <p>Le formulaire est divisé en 3 étapes :</p>
+
+            <h3>Étape 1 : Informations Personnelles</h3>
+            <ul>
+                <li><strong>Âge :</strong> Entre 18 et 75 ans</li>
+                <li><strong>Situation professionnelle :</strong> CDI, CDD, Indépendant, etc.</li>
+                <li><strong>Ancienneté :</strong> Nombre d'années dans l'emploi actuel</li>
+                <li><strong>Situation familiale :</strong> Célibataire, Marié(e), etc.</li>
+                <li><strong>Personnes à charge :</strong> Nombre de dépendants</li>
+                <li><strong>Niveau d'études :</strong> Du Bac au Doctorat</li>
+            </ul>
+
+            <h3>Étape 2 : Situation Financière</h3>
+            <ul>
+                <li><strong>Revenu mensuel net :</strong> En F CFA</li>
+                <li><strong>Charges mensuelles :</strong> Dettes actuelles en F CFA</li>
+                <li><strong>Épargne totale :</strong> Montant total épargné en F CFA</li>
+                <li><strong>Historique de crédit :</strong> Excellent, Bon, Moyen, Difficile</li>
+                <li><strong>Prêts en cours :</strong> Nombre de prêts actifs</li>
+                <li><strong>Situation logement :</strong> Propriétaire, Locataire, etc.</li>
+            </ul>
+
+            <h3>Étape 3 : Prêt Souhaité</h3>
+            <ul>
+                <li><strong>Montant du prêt :</strong> Montant souhaité en F CFA</li>
+                <li><strong>Objectif :</strong> Immobilier, Véhicule, Personnel, etc.</li>
+                <li><strong>Durée :</strong> En mois (ex: 60 mois = 5 ans)</li>
+            </ul>
+
+            <div class="warning-box">
+                <i class="fas fa-exclamation-triangle"></i>
+                <div>
+                    <strong>Important :</strong> Tous les champs sont obligatoires. La validation se fait en temps réel.
+                </div>
+            </div>
+        </div>
+
+        <!-- Résultats -->
+        <div class="doc-section" id="resultats" data-aos="fade-up">
+            <h2><i class="fas fa-chart-line"></i> 5. Résultats</h2>
+            
+            <p>Après soumission, vous obtenez :</p>
+
+            <h3>Score de Crédit (0-100)</h3>
+            <ul>
+                <li><strong>0-40 :</strong> Non éligible ❌</li>
+                <li><strong>40-60 :</strong> Éligible sous conditions ⚠️</li>
+                <li><strong>60-100 :</strong> Éligible ✅</li>
+            </ul>
+
+            <h3>Montants Disponibles</h3>
+            <ul>
+                <li><strong>Montant Minimum :</strong> Pour un petit projet</li>
+                <li><strong>Montant Recommandé :</strong> Optimal pour votre profil</li>
+                <li><strong>Montant Maximum :</strong> Capacité maximale d'emprunt</li>
+                <li><strong>Mensualité estimée :</strong> Paiement mensuel</li>
+            </ul>
+
+            <h3>Graphique Radar</h3>
+            <p>Visualisation de votre profil selon 5 critères :</p>
+            <ul>
+                <li>Revenus & Stabilité</li>
+                <li>Santé Financière</li>
+                <li>Capacité d'Emprunt</li>
+                <li>Historique de Crédit</li>
+                <li>Situation Professionnelle</li>
+            </ul>
+
+            <h3>Recommandations</h3>
+            <p>Conseils personnalisés pour améliorer votre score ou optimiser votre prêt.</p>
+        </div>
+
+        <!-- Historique -->
+        <div class="doc-section" id="historique" data-aos="fade-up">
+            <h2><i class="fas fa-table"></i> 6. Historique</h2>
+            
+            <p>Le tableau de bord affiche :</p>
+            <ul>
+                <li><strong>Statistiques :</strong> Total simulations, score moyen, taux d'approbation</li>
+                <li><strong>Graphique d'évolution :</strong> Historique de vos scores</li>
+                <li><strong>Graphique de répartition :</strong> Par catégorie d'éligibilité</li>
+                <li><strong>Tableau détaillé :</strong> Toutes vos simulations avec recherche</li>
+            </ul>
+
+            <div class="info-box">
+                <i class="fas fa-database"></i>
+                <div>
+                    <strong>Stockage :</strong> Toutes les données sont sauvegardées localement dans votre navigateur (localStorage).
+                </div>
+            </div>
+        </div>
+
+        <!-- Modèle -->
+        <div class="doc-section" id="modele" data-aos="fade-up">
+            <h2><i class="fas fa-brain"></i> 7. Intégration du Modèle ML</h2>
+            
+            <h3>Prérequis</h3>
+            <ul>
+                <li>Modèle entraîné avec scikit-learn</li>
+                <li>Méthode <code>predict_proba()</code> disponible</li>
+                <li>Format .pkl ou .joblib</li>
+            </ul>
+
+            <h3>Étapes</h3>
+            <div class="code-block">
+                <code>
+# 1. Sauvegarder votre modèle<br>
+import joblib<br>
+joblib.dump(model, 'model/model.pkl')<br><br>
+# 2. Placer le fichier dans :<br>
+# credit_scoring_app/model/model.pkl<br><br>
+# 3. Redémarrer l'application
+                </code>
+            </div>
+
+            <p>
+                Pour plus de détails, consultez le fichier <code>MODEL_INTEGRATION.md</code> dans le dossier du projet.
+            </p>
+        </div>
+
+        <!-- API -->
+        <div class="doc-section" id="api" data-aos="fade-up">
+            <h2><i class="fas fa-code"></i> 8. API</h2>
+            
+            <h3>Endpoints Disponibles</h3>
+            
+            <div class="api-endpoint">
+                <h4><span class="method get">GET</span> /</h4>
+                <p>Page d'accueil</p>
+            </div>
+
+            <div class="api-endpoint">
+                <h4><span class="method get">GET</span> /about</h4>
+                <p>Page À propos</p>
+            </div>
+
+            <div class="api-endpoint">
+                <h4><span class="method get">GET</span> /evaluation</h4>
+                <p>Page d'évaluation</p>
+            </div>
+
+            <div class="api-endpoint">
+                <h4><span class="method post">POST</span> /predict</h4>
+                <p>Calculer le score de crédit</p>
+                <div class="code-block">
+                    <code>
+Body (JSON):<br>
+{<br>
+&nbsp;&nbsp;"monthly_income": 500000,<br>
+&nbsp;&nbsp;"monthly_debts": 200000,<br>
+&nbsp;&nbsp;"employment_status": "employed",<br>
+&nbsp;&nbsp;...<br>
+}
+                    </code>
+                </div>
+            </div>
+
+            <div class="api-endpoint">
+                <h4><span class="method get">GET</span> /api/model-metrics</h4>
+                <p>Métriques du modèle (Accuracy, AUC-ROC, etc.)</p>
+            </div>
+        </div>
+
+        <!-- FAQ -->
+        <div class="doc-section" id="faq" data-aos="fade-up">
+            <h2><i class="fas fa-question-circle"></i> 9. FAQ</h2>
+            
+            <div class="faq-container">
+                <div class="faq-item">
+                    <button class="faq-question" onclick="toggleFAQ(this)">
+                        <span>Comment est calculé mon score ?</span>
+                        <i class="fas fa-chevron-down"></i>
+                    </button>
+                    <div class="faq-answer">
+                        <p>
+                            Le score est calculé par notre modèle d'IA qui analyse plusieurs critères : 
+                            revenus, ratio d'endettement, historique de crédit, situation professionnelle, etc.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <button class="faq-question" onclick="toggleFAQ(this)">
+                        <span>Mes données sont-elles sécurisées ?</span>
+                        <i class="fas fa-chevron-down"></i>
+                    </button>
+                    <div class="faq-answer">
+                        <p>
+                            Oui ! Toutes vos données sont stockées localement dans votre navigateur. 
+                            Aucune information n'est envoyée à des serveurs externes.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <button class="faq-question" onclick="toggleFAQ(this)">
+                        <span>Puis-je utiliser mon propre modèle ?</span>
+                        <i class="fas fa-chevron-down"></i>
+                    </button>
+                    <div class="faq-answer">
+                        <p>
+                            Absolument ! Placez votre fichier model.pkl dans le dossier model/ 
+                            et l'application l'utilisera automatiquement.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</section>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+function toggleFAQ(button) {
+    const faqItem = button.parentElement;
+    const isActive = faqItem.classList.contains('active');
+    
+    // Fermer tous les autres
+    document.querySelectorAll('.faq-item').forEach(item => {
+        item.classList.remove('active');
+    });
+    
+    // Ouvrir celui-ci si n'était pas actif
+    if (!isActive) {
+        faqItem.classList.add('active');
+    }
+}
+</script>
+{% endblock %}

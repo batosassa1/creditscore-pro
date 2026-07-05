@@ -1,0 +1,128 @@
+{% extends "base.html" %}
+
+{% block title %}{% if lang == 'en' %}Results{% else %}Résultats{% endif %} - CreditScore Pro{% endblock %}
+
+{% block content %}
+<!-- Results Hero -->
+<section class="results-hero">
+    <div class="container">
+        <div class="results-hero-content" data-aos="fade-up">
+            <h1>{% if lang == 'en' %}Your Result{% else %}Votre Résultat{% endif %}</h1>
+            <p>{% if lang == 'en' %}Here is the complete analysis of your profile{% else %}Voici l'analyse complète de votre profil{% endif %}</p>
+        </div>
+    </div>
+</section>
+
+<!-- Results Content -->
+<section class="results-section">
+    <div class="container">
+
+        <!-- Score Display -->
+        <div class="score-display" data-aos="zoom-in">
+            <div class="score-card" id="scoreCard">
+                <div class="gauge-container">
+                    <canvas id="scoreGauge"></canvas>
+                    <div class="gauge-center">
+                        <div class="score-value" id="scoreValue">--</div>
+                        <div class="score-label">/ 100</div>
+                    </div>
+                </div>
+                <div class="verdict" id="verdict">
+                    <div class="verdict-icon"></div>
+                    <h2 id="verdictText">{% if lang == 'en' %}Calculating...{% else %}Calcul en cours...{% endif %}</h2>
+                    <p id="verdictDescription"></p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Amount Information -->
+        <div class="amount-section" data-aos="fade-up" data-aos-delay="200">
+            <h2><i class="fas fa-coins"></i> {% if lang == 'en' %}Available Amounts{% else %}Montants Disponibles{% endif %}</h2>
+            <div class="amount-grid">
+                <div class="amount-card">
+                    <div class="amount-icon">
+                        <i class="fas fa-hand-holding-usd"></i>
+                    </div>
+                    <h3>{% if lang == 'en' %}Minimum Amount{% else %}Montant Minimum{% endif %}</h3>
+                    <div class="amount-value" id="minAmount">--</div>
+                    <p class="amount-desc">{% if lang == 'en' %}For an essential project{% else %}Pour un projet essentiel{% endif %}</p>
+                </div>
+
+                <div class="amount-card recommended">
+                    <div class="amount-badge">{% if lang == 'en' %}Recommended{% else %}Recommandé{% endif %}</div>
+                    <div class="amount-icon">
+                        <i class="fas fa-star"></i>
+                    </div>
+                    <h3>{% if lang == 'en' %}Recommended Amount{% else %}Montant Recommandé{% endif %}</h3>
+                    <div class="amount-value" id="recommendedAmount">--</div>
+                    <p class="amount-desc">{% if lang == 'en' %}Optimal for your profile{% else %}Optimal pour votre profil{% endif %}</p>
+                </div>
+
+                <div class="amount-card">
+                    <div class="amount-icon">
+                        <i class="fas fa-gem"></i>
+                    </div>
+                    <h3>{% if lang == 'en' %}Maximum Amount{% else %}Montant Maximum{% endif %}</h3>
+                    <div class="amount-value" id="maxAmount">--</div>
+                    <p class="amount-desc">{% if lang == 'en' %}Maximum capacity{% else %}Capacité maximale{% endif %}</p>
+                </div>
+            </div>
+
+            <div class="monthly-payment" id="monthlyPayment">
+                <i class="fas fa-calendar-check"></i>
+                <span>{% if lang == 'en' %}Estimated monthly payment: {% else %}Mensualité estimée: {% endif %}</span>
+                <strong id="monthlyValue">--</strong><span>{% if lang == 'en' %}/month{% else %}/mois{% endif %}</span>
+            </div>
+        </div>
+
+        <!-- Radar Chart -->
+        <div class="radar-section" data-aos="fade-up" data-aos-delay="300">
+            <h2><i class="fas fa-chart-radar"></i> {% if lang == 'en' %}Detailed Analysis{% else %}Analyse Détaillée{% endif %}</h2>
+            <p class="radar-explainer">
+                {% if lang == 'en' %}
+                    This chart shows your profile across 5 key criteria. The further a point reaches
+                    toward the edge, the stronger that aspect of your profile is.
+                {% else %}
+                    Ce graphique montre votre profil selon 5 critères clés. Plus un point s'étend
+                    vers le bord, plus cet aspect de votre profil est solide.
+                {% endif %}
+            </p>
+            <div class="radar-container">
+                <canvas id="radarChart"></canvas>
+            </div>
+            <div class="radar-legend" id="radarLegend">
+                <!-- Rempli dynamiquement par results.js avec des explications en langage simple -->
+            </div>
+        </div>
+
+        <!-- Recommendations -->
+        <div class="recommendations-section" data-aos="fade-up" data-aos-delay="400">
+            <h2><i class="fas fa-lightbulb"></i> {% if lang == 'en' %}Personalized Recommendations{% else %}Recommandations Personnalisées{% endif %}</h2>
+            <div class="recommendations-grid" id="recommendationsGrid">
+                <!-- Will be filled by JavaScript -->
+            </div>
+        </div>
+
+        <!-- Actions -->
+        <div class="results-actions" data-aos="fade-up" data-aos-delay="500">
+            <a href="/evaluation" class="btn btn-primary">
+                <i class="fas fa-redo"></i> {% if lang == 'en' %}New Simulation{% else %}Nouvelle Simulation{% endif %}
+            </a>
+            <button class="btn btn-pdf" id="downloadPdfBtn">
+                <i class="fas fa-file-pdf"></i> {% if lang == 'en' %}Download my PDF Report{% else %}Télécharger mon Rapport PDF{% endif %}
+            </button>
+            <a href="/" class="btn btn-secondary">
+                <i class="fas fa-home"></i> {% if lang == 'en' %}Back to Home{% else %}Retour à l'Accueil{% endif %}
+            </a>
+            <button class="btn btn-outline" onclick="window.print()">
+                <i class="fas fa-print"></i> {% if lang == 'en' %}Print{% else %}Imprimer{% endif %}
+            </button>
+        </div>
+
+    </div>
+</section>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{{ url_for('static', filename='js/results.js') }}?v=6"></script>
+{% endblock %}

@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+    <title>{% block title %}CreditScore Pro{% endblock %}</title>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    
+    <!-- AOS Animation Library -->
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    
+    {% block extra_css %}{% endblock %}
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="container">
+            <div class="nav-wrapper">
+                <a href="/" class="logo">
+                    <i class="fas fa-chart-line"></i>
+                    <span>CreditScore <span class="logo-accent">Pro</span></span>
+                </a>
+                
+                <div class="nav-menu" id="navMenu">
+                    <a href="/" class="nav-link {% if request.path == '/' %}active{% endif %}">
+                        <i class="fas fa-home"></i>
+                        <span data-i18n>{% if lang == 'en' %}Home{% else %}Accueil{% endif %}</span>
+                    </a>
+                    {% if current_user.is_authenticated %}
+                        {% if current_user.__class__.__name__ == 'Admin' %}
+                            <a href="/admin/dashboard" class="nav-link {% if request.path == '/admin/dashboard' %}active{% endif %}">
+                                <i class="fas fa-shield-alt"></i>
+                                <span>{% if lang == 'en' %}Admin Dashboard{% else %}Dashboard Admin{% endif %}</span>
+                            </a>
+                        {% else %}
+                            <a href="/evaluation" class="nav-link {% if request.path == '/evaluation' %}active{% endif %}">
+                                <i class="fas fa-calculator"></i>
+                                <span>{% if lang == 'en' %}Evaluation{% else %}Évaluation{% endif %}</span>
+                            </a>
+                            <a href="/dashboard" class="nav-link {% if request.path == '/dashboard' %}active{% endif %}">
+                                <i class="fas fa-history"></i>
+                                <span>{% if lang == 'en' %}My History{% else %}Mon Historique{% endif %}</span>
+                            </a>
+                        {% endif %}
+                    {% else %}
+                        <a href="/evaluation" class="nav-link">
+                            <i class="fas fa-calculator"></i>
+                            <span>{% if lang == 'en' %}Evaluation{% else %}Évaluation{% endif %}</span>
+                        </a>
+                        <a href="/history" class="nav-link {% if request.path == '/history' %}active{% endif %}">
+                            <i class="fas fa-history"></i>
+                            <span>{% if lang == 'en' %}History{% else %}Historique{% endif %}</span>
+                        </a>
+                    {% endif %}
+                    <a href="/about" class="nav-link {% if request.path == '/about' %}active{% endif %}">
+                        <i class="fas fa-info-circle"></i>
+                        <span>{% if lang == 'en' %}About{% else %}À propos{% endif %}</span>
+                    </a>
+                </div>
+                
+                <div class="nav-actions">
+                    <!-- Language switcher -->
+                    <div class="lang-switcher">
+                        {% if lang == 'fr' %}
+                            <a href="{{ url_for('set_lang', lang='en') }}" class="lang-btn" title="Switch to English">🇬🇧 EN</a>
+                        {% else %}
+                            <a href="{{ url_for('set_lang', lang='fr') }}" class="lang-btn" title="Passer en français">🇫🇷 FR</a>
+                        {% endif %}
+                    </div>
+                    <button id="themeToggle" class="theme-toggle" title="Changer de thème">
+                        <i class="fas fa-moon"></i>
+                    </button>
+                    {% if current_user.is_authenticated %}
+                        <div class="user-menu">
+                            <span class="user-name">
+                                <i class="fas fa-user-circle"></i>
+                                {% if current_user.__class__.__name__ == 'Admin' %}
+                                    Admin
+                                {% else %}
+                                    {{ current_user.first_name }}
+                                {% endif %}
+                            </span>
+                            <a href="{{ url_for('profile') }}" class="nav-link" title="Mon Profil">
+                                <i class="fas fa-user-circle"></i>
+                            </a>
+                            {% if current_user.__class__.__name__ == 'User' %}
+                                <a href="{{ url_for('user_tickets') }}" class="nav-link" title="Mes questions">
+                                    <i class="fas fa-envelope"></i>
+                                </a>
+                            {% endif %}
+                            <a href="/logout" class="btn-logout" title="Déconnexion">
+                                <i class="fas fa-sign-out-alt"></i>
+                            </a>
+                        </div>
+                    {% else %}
+                        <a href="/login" class="btn-login">
+                            <i class="fas fa-sign-in-alt"></i> Connexion
+                        </a>
+                    {% endif %}
+                </div>
+                
+                <div class="hamburger" id="hamburger">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="page-transition">
+        <!-- Flash Messages -->
+        <div class="container flash-messages">
+            {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                    {% for category, message in messages %}
+                        <div class="alert alert-{{ category if category != 'error' else 'danger' }} alert-dismissible fade show" role="alert">
+                            {% if category == 'success' %}
+                                <i class="fas fa-check-circle"></i>
+                            {% elif category == 'error' or category == 'danger' %}
+                                <i class="fas fa-exclamation-circle"></i>
+                            {% elif category == 'info' %}
+                                <i class="fas fa-info-circle"></i>
+                            {% elif category == 'warning' %}
+                                <i class="fas fa-exclamation-triangle"></i>
+                            {% endif %}
+                            {{ message|safe }}
+                            <button type="button" class="btn-close" onclick="this.parentElement.remove()" aria-label="Close">&times;</button>
+                        </div>
+                    {% endfor %}
+                {% endif %}
+            {% endwith %}
+        </div>
+
+        {% block content %}{% endblock %}
+    </main>
+
+    <!-- Floating Action Button for Support -->
+    <button class="fab-support" id="openSupport" title="{% if lang == 'en' %}Ask a question{% else %}Poser une question{% endif %}">
+        <i class="fas fa-comment-dots"></i>
+    </button>
+
+    <!-- Support Modal -->
+    <div class="support-modal" id="supportModal">
+        <div class="support-modal-content glass">
+            <div class="support-modal-header">
+                <h3><i class="fas fa-headset"></i> Support CreditScore</h3>
+                <button class="close-support" id="closeSupport">&times;</button>
+            </div>
+            <div class="support-modal-body">
+                {% if current_user.is_authenticated and current_user.__class__.__name__ == 'User' %}
+                    <p>{% if lang == 'en' %}Need help or have a question about your score?{% else %}Besoin d'aide ou une question sur votre score ?{% endif %}</p>
+                    <div class="support-form">
+                        <input type="text" id="supportSubject"
+                               placeholder="{% if lang == 'en' %}Subject{% else %}Sujet de votre question{% endif %}"
+                               class="form-input">
+                        <textarea id="supportMessage"
+                                  placeholder="{% if lang == 'en' %}How can we help you?{% else %}Comment pouvons-nous vous aider ?{% endif %}"
+                                  class="form-input"></textarea>
+                        <button class="btn btn-green w-100" id="sendSupport">
+                            <i class="fas fa-paper-plane"></i>
+                            {% if lang == 'en' %}Send{% else %}Envoyer{% endif %}
+                        </button>
+                    </div>
+                    <div class="support-history-link">
+                        <a href="{{ url_for('user_tickets') }}">
+                            <i class="fas fa-history"></i>
+                            {% if lang == 'en' %}View my previous messages{% else %}Voir mes messages précédents{% endif %}
+                        </a>
+                    </div>
+                {% else %}
+                    <div style="text-align:center;padding:20px 10px">
+                        <i class="fas fa-lock" style="font-size:2.5rem;color:var(--accent-primary);display:block;margin-bottom:15px"></i>
+                        <p style="margin-bottom:18px;color:var(--text-secondary)">
+                            {% if lang == 'en' %}You must be logged in to contact support.{% else %}Vous devez être connecté pour contacter le support.{% endif %}
+                        </p>
+                        <a href="{{ url_for('login') }}" class="btn btn-green">
+                            <i class="fas fa-sign-in-alt"></i>
+                            {% if lang == 'en' %}Log in{% else %}Se connecter{% endif %}
+                        </a>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>CreditScore Pro</h3>
+                    <p>{% if lang == 'en' %}Your trusted partner for smart credit evaluation.{% else %}Votre partenaire de confiance pour l'évaluation de crédit intelligente.{% endif %}</p>
+                    <div class="social-links">
+                        <a href="https://linkedin.com" target="_blank" title="LinkedIn"><i class="fab fa-linkedin"></i></a>
+                        <a href="https://twitter.com" target="_blank" title="Twitter"><i class="fab fa-twitter"></i></a>
+                        <a href="https://github.com" target="_blank" title="GitHub"><i class="fab fa-github"></i></a>
+                    </div>
+                </div>
+
+                <div class="footer-section">
+                    <h4>{% if lang == 'en' %}Quick Links{% else %}Liens rapides{% endif %}</h4>
+                    <ul>
+                        <li><a href="/">{% if lang == 'en' %}Home{% else %}Accueil{% endif %}</a></li>
+                        <li><a href="/about">{% if lang == 'en' %}About{% else %}À propos{% endif %}</a></li>
+                        <li><a href="/evaluation">{% if lang == 'en' %}Evaluation{% else %}Évaluation{% endif %}</a></li>
+                        <li><a href="/history">{% if lang == 'en' %}History{% else %}Historique{% endif %}</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-section">
+                    <h4>{% if lang == 'en' %}Resources{% else %}Ressources{% endif %}</h4>
+                    <ul>
+                        <li><a href="/documentation">{% if lang == 'en' %}Documentation{% else %}Documentation{% endif %}</a></li>
+                        <li><a href="/about#faq">FAQ</a></li>
+                        <li><a href="/about#technology">{% if lang == 'en' %}Technology{% else %}Technologie{% endif %}</a></li>
+                        <li><a href="/about#metrics">{% if lang == 'en' %}Model Metrics{% else %}Métriques du Modèle{% endif %}</a></li>
+                        <li><a href="tel:+22373740801">{% if lang == 'en' %}Phone Support{% else %}Support Téléphonique{% endif %}</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-section">
+                    <h4>Contact</h4>
+                    <ul class="contact-info">
+                        <li><i class="fas fa-phone"></i> +223 73 74 08 01</li>
+                        <li><i class="fas fa-map-marker-alt"></i> Bamako, Mali</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="footer-bottom">
+                <p>&copy; 2026 CreditScore Pro. {% if lang == 'en' %}All rights reserved.{% else %}Tous droits réservés.{% endif %} | <a href="#" onclick="showLegalModal('mentions'); return false;">{% if lang == 'en' %}Legal Notice{% else %}Mentions légales{% endif %}</a> | <a href="#" onclick="showLegalModal('privacy'); return false;">{% if lang == 'en' %}Privacy Policy{% else %}Politique de confidentialité{% endif %}</a></p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script>const CURRENT_LANG = '{{ lang }}';</script>
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="{{ url_for('static', filename='js/main.js') }}?v=4"></script>
+    
+    {% block extra_js %}{% endblock %}
+</body>
+</html>

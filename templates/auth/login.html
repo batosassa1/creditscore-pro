@@ -1,0 +1,127 @@
+{% extends "base.html" %}
+{% block title %}{% if register_mode %}Inscription{% else %}Connexion{% endif %} - CreditScore Pro{% endblock %}
+
+{% block content %}
+<section class="auth-section">
+    <div class="container">
+        <div class="auth-card glass" data-aos="fade-up">
+            <div class="auth-tabs">
+                <button class="auth-tab {% if not register_mode %}active{% endif %}" onclick="showTab('login')">
+                    <i class="fas fa-sign-in-alt"></i> Connexion
+                </button>
+                <button class="auth-tab {% if register_mode %}active{% endif %}" onclick="showTab('register')">
+                    <i class="fas fa-user-plus"></i> Inscription
+                </button>
+            </div>
+
+            <!-- Login Form -->
+            <div id="loginForm" class="auth-form" style="{% if register_mode %}display:none{% endif %}">
+                <div class="auth-header">
+                    <div class="auth-icon"><i class="fas fa-user-circle"></i></div>
+                    <h2>Content de vous revoir !</h2>
+                    <p>Connectez-vous à votre espace personnel</p>
+                </div>
+                <form method="POST" action="{{ url_for('login') }}">
+                    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                    <div class="form-group">
+                        <label class="form-label"><i class="fas fa-envelope"></i> Email</label>
+                        <input type="email" name="email" class="form-input" placeholder="votre@email.com" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label"><i class="fas fa-lock"></i> Mot de passe</label>
+                        <input type="password" name="password" class="form-input" placeholder="••••••••" required>
+                    </div>
+                    <div class="form-group" style="flex-direction:row;align-items:center;gap:10px;">
+                        <input type="checkbox" name="remember_me" id="remember_me" style="width:auto">
+                        <label for="remember_me" style="margin:0;font-size:0.9rem">Se souvenir de moi</label>
+                    </div>
+                    <button type="submit" class="btn btn-primary w-100">
+                        <i class="fas fa-sign-in-alt"></i>
+                        {% if lang == 'en' %}Log in{% else %}Se connecter{% endif %}
+                    </button>
+                    <div style="text-align:center;margin-top:15px">
+                        <a href="{{ url_for('forgot_password') }}" style="color:var(--accent-primary);font-size:.88rem">
+                            <i class="fas fa-key"></i>
+                            {% if lang == 'en' %}Forgot your password?{% else %}Mot de passe oublié ?{% endif %}
+                        </a>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Register Form -->
+            <div id="registerForm" class="auth-form" style="{% if not register_mode %}display:none{% endif %}">
+                <div class="auth-header">
+                    <div class="auth-icon"><i class="fas fa-user-plus"></i></div>
+                    <h2>Créez votre compte</h2>
+                    <p>Rejoignez CreditScore Pro gratuitement</p>
+                </div>
+                <form method="POST" action="{{ url_for('register') }}">
+                    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label"><i class="fas fa-user"></i> Prénom</label>
+                            <input type="text" name="first_name" class="form-input" placeholder="Jean" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label"><i class="fas fa-user"></i> Nom</label>
+                            <input type="text" name="last_name" class="form-input" placeholder="Dupont" required>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label"><i class="fas fa-envelope"></i> Email</label>
+                        <input type="email" name="email" class="form-input" placeholder="votre@email.com" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label"><i class="fas fa-phone"></i> Téléphone</label>
+                        <input type="text" name="phone" class="form-input" placeholder="+223 XX XX XX XX">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label"><i class="fas fa-lock"></i> Mot de passe</label>
+                        <input type="password" name="password" class="form-input" placeholder="Min. 8 caractères" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label"><i class="fas fa-lock"></i> Confirmer le mot de passe</label>
+                        <input type="password" name="confirm_password" class="form-input" placeholder="Répétez le mot de passe" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary w-100">
+                        <i class="fas fa-user-plus"></i> S'inscrire
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>
+
+<style>
+.auth-section { padding:80px 20px; min-height:80vh; display:flex; align-items:center; background:var(--bg-primary); }
+.auth-card { max-width:520px; margin:0 auto; width:100%; padding:0; border-radius:20px; overflow:hidden; }
+.auth-tabs { display:flex; border-bottom:1px solid var(--glass-border,rgba(0,0,0,0.1)); }
+.auth-tab { flex:1; padding:18px; border:none; background:transparent; font-size:1rem; font-weight:600; cursor:pointer; color:var(--text-secondary); transition:all .3s; display:flex; align-items:center; justify-content:center; gap:8px; }
+.auth-tab.active { color:var(--accent-primary); border-bottom:3px solid var(--accent-primary); background:rgba(196,168,130,0.05); }
+.auth-form { padding:40px; }
+.auth-header { text-align:center; margin-bottom:30px; }
+.auth-icon { font-size:50px; color:var(--accent-primary); margin-bottom:15px; }
+.auth-header h2 { font-family:var(--font-heading); margin-bottom:8px; color:var(--text-primary); }
+.auth-header p { color:var(--text-secondary); }
+.form-group { display:flex; flex-direction:column; gap:8px; margin-bottom:20px; }
+.form-row { display:grid; grid-template-columns:1fr 1fr; gap:15px; }
+.form-label { font-weight:500; color:var(--text-primary); font-size:0.9rem; display:flex; align-items:center; gap:8px; }
+.form-input { padding:12px 16px; border:1px solid var(--border-color,#ddd); border-radius:10px; background:var(--bg-primary); color:var(--text-primary); font-size:1rem; transition:border-color .3s; }
+.form-input:focus { outline:none; border-color:var(--accent-primary); }
+.btn { padding:14px 24px; border-radius:10px; border:none; font-weight:600; cursor:pointer; transition:all .3s; text-decoration:none; display:inline-flex; align-items:center; justify-content:center; gap:8px; font-size:1rem; }
+.btn-primary { background:var(--accent-primary,#C4A882); color:white; }
+.btn-primary:hover { background:var(--accent-secondary,#A0856C); transform:translateY(-2px); box-shadow:0 5px 15px rgba(0,0,0,.2); }
+.w-100 { width:100%; }
+@media(max-width:480px){ .form-row{grid-template-columns:1fr;} .auth-form{padding:25px;} }
+</style>
+
+<script>
+function showTab(tab) {
+    document.getElementById('loginForm').style.display = tab === 'login' ? 'block' : 'none';
+    document.getElementById('registerForm').style.display = tab === 'register' ? 'block' : 'none';
+    document.querySelectorAll('.auth-tab').forEach((t,i) => {
+        t.classList.toggle('active', (tab === 'login' && i === 0) || (tab === 'register' && i === 1));
+    });
+}
+</script>
+{% endblock %}

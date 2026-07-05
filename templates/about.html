@@ -1,0 +1,316 @@
+{% extends "base.html" %}
+
+{% block title %}{% if lang == 'en' %}About{% else %}À propos{% endif %} - CreditScore Pro{% endblock %}
+
+{% block content %}
+<!-- Hero Section -->
+<section class="about-hero">
+    <div class="container">
+        <div class="about-hero-content" data-aos="fade-up">
+            <h1>{% if lang == 'en' %}About CreditScore Pro{% else %}À propos de CreditScore Pro{% endif %}</h1>
+            <p>{% if lang == 'en' %}Democratizing access to credit through artificial intelligence{% else %}Démocratiser l'accès au crédit grâce à l'intelligence artificielle{% endif %}</p>
+        </div>
+    </div>
+</section>
+
+<!-- Mission Section -->
+<section class="mission-section">
+    <div class="container">
+        <div class="mission-grid">
+            <div class="mission-text" data-aos="fade-right">
+                <h2>{% if lang == 'en' %}Our Mission{% else %}Notre Mission{% endif %}</h2>
+                <p>
+                    {% if lang == 'en' %}
+                        At CreditScore Pro, we believe everyone deserves fair access
+                        to credit. Our mission is to democratize credit evaluation using
+                        advanced artificial intelligence technologies.
+                    {% else %}
+                        Chez CreditScore Pro, nous croyons que tout le monde mérite un accès équitable
+                        au crédit. Notre mission est de démocratiser l'évaluation de crédit en utilisant
+                        des technologies d'intelligence artificielle avancées.
+                    {% endif %}
+                </p>
+                <p>
+                    {% if lang == 'en' %}
+                        We have developed a transparent and unbiased algorithm that evaluates your
+                        financial profile comprehensively and objectively, giving you the tools
+                        to understand and improve your eligibility.
+                    {% else %}
+                        Nous avons développé un algorithme transparent et impartial qui évalue votre
+                        profil financier de manière complète et objective, vous donnant ainsi les outils
+                        pour comprendre et améliorer votre éligibilité.
+                    {% endif %}
+                </p>
+
+                <ul class="mission-list">
+                    <li><i class="fas fa-check-circle"></i> {% if lang == 'en' %}Full algorithm transparency{% else %}Transparence totale de l'algorithme{% endif %}</li>
+                    <li><i class="fas fa-check-circle"></i> {% if lang == 'en' %}Fair and unbiased evaluation{% else %}Évaluation impartiale et objective{% endif %}</li>
+                    <li><i class="fas fa-check-circle"></i> {% if lang == 'en' %}Protection of your personal data{% else %}Protection de vos données personnelles{% endif %}</li>
+                    <li><i class="fas fa-check-circle"></i> {% if lang == 'en' %}Personalized recommendations{% else %}Recommandations personnalisées{% endif %}</li>
+                </ul>
+            </div>
+
+            <div class="mission-image" data-aos="fade-left">
+                <div class="mission-card">
+                    <i class="fas fa-bullseye"></i>
+                    <h3>{% if lang == 'en' %}Goal{% else %}Objectif{% endif %}</h3>
+                    <p>{% if lang == 'en' %}Making credit accessible to all through technology{% else %}Rendre le crédit accessible à tous grâce à la technologie{% endif %}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Technology Section -->
+<section class="technology-section" id="technology">
+    <div class="container">
+        <h2 class="section-title" data-aos="fade-up">{% if lang == 'en' %}Our Technology{% else %}Notre Technologie{% endif %}</h2>
+        <p class="section-subtitle" data-aos="fade-up" data-aos-delay="100">
+            {% if lang == 'en' %}A powerful and transparent AI model{% else %}Un modèle d'IA puissant et transparent{% endif %}
+        </p>
+
+        <div class="tech-grid">
+            <div class="tech-card" data-aos="fade-up" data-aos-delay="200">
+                <div class="tech-icon"><i class="fas fa-robot"></i></div>
+                <h3>{% if lang == 'en' %}Artificial Intelligence{% else %}Intelligence Artificielle{% endif %}</h3>
+                <p>
+                    {% if lang == 'en' %}
+                        Our model uses advanced machine learning algorithms
+                        to analyze hundreds of variables and provide an accurate prediction.
+                    {% else %}
+                        Notre modèle utilise des algorithmes de machine learning avancés
+                        pour analyser des centaines de variables et fournir une prédiction précise.
+                    {% endif %}
+                </p>
+            </div>
+
+            <div class="tech-card" data-aos="fade-up" data-aos-delay="300">
+                <div class="tech-icon"><i class="fas fa-lock"></i></div>
+                <h3>{% if lang == 'en' %}Maximum Security{% else %}Sécurité Maximale{% endif %}</h3>
+                <p>
+                    {% if lang == 'en' %}
+                        Bank-grade encryption for all your data.
+                        No information is shared with third parties.
+                    {% else %}
+                        Cryptage de niveau bancaire pour toutes vos données.
+                        Aucune information n'est partagée avec des tiers.
+                    {% endif %}
+                </p>
+            </div>
+
+            <div class="tech-card" data-aos="fade-up" data-aos-delay="400">
+                <div class="tech-icon"><i class="fas fa-tachometer-alt"></i></div>
+                <h3>{% if lang == 'en' %}Performance{% else %}Performance{% endif %}</h3>
+                <p>
+                    {% if lang == 'en' %}
+                        Real-time results thanks to our optimized infrastructure
+                        and efficient algorithm.
+                    {% else %}
+                        Résultats en temps réel grâce à notre infrastructure optimisée
+                        et notre algorithme efficace.
+                    {% endif %}
+                </p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Metrics Section -->
+<section class="metrics-section" id="metrics">
+    <div class="container">
+        <h2 class="section-title" data-aos="fade-up">{% if lang == 'en' %}Our Model's Performance{% else %}Performance de Notre Modèle{% endif %}</h2>
+        <p class="section-subtitle" data-aos="fade-up" data-aos-delay="100">
+            {% if lang == 'en' %}Metrics that demonstrate our accuracy{% else %}Des métriques qui témoignent de notre précision{% endif %}
+        </p>
+
+        <div class="metrics-grid">
+            <div class="metric-card" data-aos="fade-up" data-aos-delay="200">
+                <div class="metric-value" id="metricAccuracy">80%</div>
+                <div class="metric-label">{% if lang == 'en' %}Accuracy{% else %}Précision (Accuracy){% endif %}</div>
+                <div class="metric-description">
+                    {% if lang == 'en' %}Our model correctly predicts 80% of cases{% else %}Notre modèle prédit correctement 80% des cas{% endif %}
+                </div>
+            </div>
+
+            <div class="metric-card" data-aos="fade-up" data-aos-delay="300">
+                <div class="metric-value" id="metricAUC">0.78</div>
+                <div class="metric-label">AUC-ROC</div>
+                <div class="metric-description">
+                    {% if lang == 'en' %}Excellent ability to distinguish good from bad payers{% else %}Excellente capacité de discrimination entre bons et mauvais payeurs{% endif %}
+                </div>
+            </div>
+
+            <div class="metric-card" data-aos="fade-up" data-aos-delay="400">
+                <div class="metric-value" id="metricPrecision">55%</div>
+                <div class="metric-label">{% if lang == 'en' %}Precision{% else %}Précision (Precision){% endif %}</div>
+                <div class="metric-description">
+                    {% if lang == 'en' %}Reliable identification of at-risk profiles{% else %}Identification fiable des profils à risque{% endif %}
+                </div>
+            </div>
+
+            <div class="metric-card" data-aos="fade-up" data-aos-delay="500">
+                <div class="metric-value" id="metricRecall">55%</div>
+                <div class="metric-label">{% if lang == 'en' %}Recall{% else %}Rappel (Recall){% endif %}</div>
+                <div class="metric-description">
+                    {% if lang == 'en' %}Effective detection of at-risk profiles{% else %}Détection efficace des profils à risque{% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Transparency Section -->
+<section class="transparency-section">
+    <div class="container">
+        <div class="transparency-content" data-aos="fade-up">
+            <h2>{% if lang == 'en' %}Algorithmic Transparency{% else %}Transparence Algorithmique{% endif %}</h2>
+            <p>
+                {% if lang == 'en' %}
+                    We believe in full transparency. Here's how our model evaluates your profile:
+                {% else %}
+                    Nous croyons en la transparence totale. Voici comment notre modèle évalue votre profil :
+                {% endif %}
+            </p>
+
+            <div class="criteria-grid">
+                <div class="criteria-item">
+                    <div class="criteria-icon"><i class="fas fa-wallet"></i></div>
+                    <h4>{% if lang == 'en' %}Income and Stability{% else %}Revenus et Stabilité{% endif %}</h4>
+                    <p>{% if lang == 'en' %}Income amount, regularity, type of employment{% else %}Montant des revenus, régularité, type d'emploi{% endif %}</p>
+                </div>
+
+                <div class="criteria-item">
+                    <div class="criteria-icon"><i class="fas fa-balance-scale"></i></div>
+                    <h4>{% if lang == 'en' %}Debt Ratio{% else %}Ratio d'Endettement{% endif %}</h4>
+                    <p>{% if lang == 'en' %}Proportion of your income already committed to debt{% else %}Proportion de vos revenus déjà engagée dans des dettes{% endif %}</p>
+                </div>
+
+                <div class="criteria-item">
+                    <div class="criteria-icon"><i class="fas fa-history"></i></div>
+                    <h4>{% if lang == 'en' %}Credit History{% else %}Historique de Crédit{% endif %}</h4>
+                    <p>{% if lang == 'en' %}Your loan repayment track record{% else %}Votre passé en matière de remboursement de prêts{% endif %}</p>
+                </div>
+
+                <div class="criteria-item">
+                    <div class="criteria-icon"><i class="fas fa-briefcase"></i></div>
+                    <h4>{% if lang == 'en' %}Employment Situation{% else %}Situation Professionnelle{% endif %}</h4>
+                    <p>{% if lang == 'en' %}Contract type, seniority, sector of activity{% else %}Type de contrat, ancienneté, secteur d'activité{% endif %}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- FAQ Section -->
+<section class="faq-section" id="faq">
+    <div class="container">
+        <h2 class="section-title" data-aos="fade-up">{% if lang == 'en' %}Frequently Asked Questions{% else %}Questions Fréquentes{% endif %}</h2>
+
+        <div class="faq-container">
+            <div class="faq-item" data-aos="fade-up" data-aos-delay="200">
+                <button class="faq-question">
+                    <span>{% if lang == 'en' %}How is my score calculated?{% else %}Comment est calculé mon score ?{% endif %}</span>
+                    <i class="fas fa-chevron-down"></i>
+                </button>
+                <div class="faq-answer">
+                    <p>
+                        {% if lang == 'en' %}
+                            Your score is calculated by our artificial intelligence model, which analyzes
+                            several criteria: your income, debt ratio, credit history,
+                            employment situation, and other financial factors. The score
+                            ranges from 0 to 100.
+                        {% else %}
+                            Votre score est calculé par notre modèle d'intelligence artificielle qui analyse
+                            plusieurs critères : vos revenus, votre ratio d'endettement, votre historique de
+                            crédit, votre situation professionnelle, et d'autres facteurs financiers. Le score
+                            varie de 0 à 100.
+                        {% endif %}
+                    </p>
+                </div>
+            </div>
+
+            <div class="faq-item" data-aos="fade-up" data-aos-delay="300">
+                <button class="faq-question">
+                    <span>{% if lang == 'en' %}Is my data secure?{% else %}Mes données sont-elles sécurisées ?{% endif %}</span>
+                    <i class="fas fa-chevron-down"></i>
+                </button>
+                <div class="faq-answer">
+                    <p>
+                        {% if lang == 'en' %}
+                            Absolutely. We use bank-grade encryption (AES-256) to protect
+                            all your information. Your data is never shared with third parties and
+                            is deleted after analysis if you wish.
+                        {% else %}
+                            Absolument. Nous utilisons un cryptage de niveau bancaire (AES-256) pour protéger
+                            toutes vos informations. Vos données ne sont jamais partagées avec des tiers et
+                            sont supprimées après l'analyse si vous le souhaitez.
+                        {% endif %}
+                    </p>
+                </div>
+            </div>
+
+            <div class="faq-item" data-aos="fade-up" data-aos-delay="400">
+                <button class="faq-question">
+                    <span>{% if lang == 'en' %}What do the different scores mean?{% else %}Que signifient les différents scores ?{% endif %}</span>
+                    <i class="fas fa-chevron-down"></i>
+                </button>
+                <div class="faq-answer">
+                    <p>
+                        {% if lang == 'en' %}
+                            <strong>0-44:</strong> Not eligible - Your profile presents significant risks.<br>
+                            <strong>45-64:</strong> Eligible with conditions - A down payment or guarantor may help.<br>
+                            <strong>65-100:</strong> Eligible - Your profile is solid for obtaining credit.
+                        {% else %}
+                            <strong>0-44 :</strong> Non éligible - Votre profil présente des risques importants.<br>
+                            <strong>45-64 :</strong> Éligible sous conditions - Un apport ou garant peut aider.<br>
+                            <strong>65-100 :</strong> Éligible - Votre profil est solide pour obtenir un crédit.
+                        {% endif %}
+                    </p>
+                </div>
+            </div>
+
+            <div class="faq-item" data-aos="fade-up" data-aos-delay="500">
+                <button class="faq-question">
+                    <span>{% if lang == 'en' %}Can I improve my score?{% else %}Puis-je améliorer mon score ?{% endif %}</span>
+                    <i class="fas fa-chevron-down"></i>
+                </button>
+                <div class="faq-answer">
+                    <p>
+                        {% if lang == 'en' %}
+                            Yes! After your evaluation, we provide personalized
+                            recommendations to improve your score: reduce your debts, increase your
+                            income, or correct irregularities in your history.
+                        {% else %}
+                            Oui ! Après votre évaluation, nous vous fournissons des recommandations
+                            personnalisées pour améliorer votre score : réduire vos dettes, augmenter vos
+                            revenus, ou corriger des irrégularités dans votre historique.
+                        {% endif %}
+                    </p>
+                </div>
+            </div>
+
+            <div class="faq-item" data-aos="fade-up" data-aos-delay="600">
+                <button class="faq-question">
+                    <span>{% if lang == 'en' %}How long does it take to get my score?{% else %}Combien de temps faut-il pour obtenir mon score ?{% endif %}</span>
+                    <i class="fas fa-chevron-down"></i>
+                </button>
+                <div class="faq-answer">
+                    <p>
+                        {% if lang == 'en' %}
+                            The analysis is instant! Once the form is completed, our algorithm
+                            processes your data in seconds and displays your score immediately.
+                        {% else %}
+                            L'analyse est instantanée ! Une fois le formulaire complété, notre algorithme
+                            traite vos données en quelques secondes et vous affiche votre score immédiatement.
+                        {% endif %}
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{{ url_for('static', filename='js/about.js') }}?v=2"></script>
+{% endblock %}

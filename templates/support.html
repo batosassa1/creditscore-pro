@@ -1,0 +1,188 @@
+{% extends "base.html" %}
+
+{% block title %}Support & Questions - Admin{% endblock %}
+
+{% block content %}
+<section class="admin-support-section">
+    <div class="container">
+        <div class="admin-header">
+            <div>
+                <h1><i class="fas fa-headset"></i> Support & Questions</h1>
+                <p>Répondez aux demandes des utilisateurs</p>
+            </div>
+            <div class="admin-actions">
+                <a href="{{ url_for('admin_dashboard') }}" class="btn btn-secondary">
+                    <i class="fas fa-arrow-left"></i> Retour au Dashboard
+                </a>
+            </div>
+        </div>
+
+        <div class="tickets-grid">
+            {% for ticket in tickets %}
+            <div class="ticket-card glass {{ 'resolved' if ticket.status == 'closed' else 'pending' }}" id="ticket-{{ ticket.id }}">
+                <div class="ticket-header">
+                    <span class="ticket-id">#{{ ticket.id }}</span>
+                    <span class="ticket-status-badge">{{ 'Traité' if ticket.status == 'closed' else 'En attente' }}</span>
+                    <span class="ticket-date">{{ ticket.created_at.strftime('%d/%m/%Y %H:%M') }}</span>
+                </div>
+                
+                <div class="ticket-body">
+                    <h3>{{ ticket.subject }}</h3>
+                    <div class="user-info">
+                        <i class="fas fa-user"></i> 
+                        {% if ticket.user_rel %}
+                            {{ ticket.user_rel.first_name }} {{ ticket.user_rel.last_name }} ({{ ticket.user_rel.email }})
+                        {% else %}
+                            Visiteur Anonyme
+                        {% endif %}
+                    </div>
+                    <div class="ticket-message">
+                        <p>{{ ticket.message }}</p>
+                    </div>
+                    
+                    {% if ticket.reply %}
+                    <div class="ticket-reply-box">
+                        <h4><i class="fas fa-reply"></i> Votre réponse :</h4>
+                        <p>{{ ticket.reply }}</p>
+                        <small>Répondu le {{ ticket.replied_at.strftime('%d/%m/%Y %H:%M') }}</small>
+                    </div>
+                    {% else %}
+                    <div class="reply-form" id="reply-form-{{ ticket.id }}">
+                        <textarea id="reply-text-{{ ticket.id }}" placeholder="Écrivez votre réponse ici..." class="form-input"></textarea>
+                        <button class="btn btn-primary" onclick="sendReply({{ ticket.id }})">
+                            <i class="fas fa-paper-plane"></i> Envoyer la réponse
+                        </button>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+            {% endfor %}
+            
+            {% if not tickets %}
+            <div class="no-tickets glass">
+                <i class="fas fa-check-circle"></i>
+                <p>Aucun message pour le moment.</p>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</section>
+
+<style>
+.admin-support-section {
+    padding: var(--spacing-lg) 0;
+}
+
+.tickets-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.ticket-card {
+    padding: 25px;
+    border-radius: var(--radius-lg);
+    transition: all 0.3s ease;
+}
+
+.ticket-card.pending {
+    border-left: 5px solid var(--accent-primary);
+}
+
+.ticket-card.resolved {
+    border-left: 5px solid var(--success);
+    opacity: 0.8;
+}
+
+.ticket-header {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 15px;
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+}
+
+.ticket-status-badge {
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-weight: 600;
+    font-size: 0.8rem;
+}
+
+.pending .ticket-status-badge { background: #fff3e0; color: #e65100; }
+.resolved .ticket-status-badge { background: #e8f5e9; color: #2e7d32; }
+
+.user-info {
+    margin: 10px 0;
+    font-size: 0.9rem;
+    color: var(--accent-primary);
+    font-weight: 500;
+}
+
+.ticket-message {
+    background: rgba(0,0,0,0.03);
+    padding: 15px;
+    border-radius: var(--radius-md);
+    margin-bottom: 20px;
+}
+
+[data-theme="dark"] .ticket-message {
+    background: rgba(255,255,255,0.05);
+}
+
+.ticket-reply-box {
+    background: rgba(143, 175, 143, 0.1);
+    padding: 15px;
+    border-radius: var(--radius-md);
+    border: 1px dashed var(--success);
+}
+
+.reply-form textarea {
+    width: 100%;
+    min-height: 100px;
+    margin-bottom: 15px;
+}
+
+.no-tickets {
+    text-align: center;
+    padding: 50px;
+    border-radius: var(--radius-lg);
+}
+
+.no-tickets i {
+    font-size: 4rem;
+    color: var(--success);
+    margin-bottom: 20px;
+}
+</style>
+
+<script>
+function sendReply(ticketId) {
+    const replyText = document.getElementById(`reply-text-${ticketId}`).value;
+    
+    if (!replyText.trim()) {
+        alert('Veuillez saisir une réponse.');
+        return;
+    }
+    
+    const csrfToken = document.querySelector('meta[name="csrf-token"]')?.content || '';
+    
+    fetch(`/admin/support/reply/${ticketId}`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRFToken': csrfToken
+        },
+        body: JSON.stringify({ reply: replyText })
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.status === 'success') {
+            location.reload();
+        } else {
+            alert('Erreur : ' + data.message);
+        }
+    });
+}
+</script>
+{% endblock %}

@@ -1,0 +1,53 @@
+{% extends "base.html" %}
+{% block title %}Connexion Admin - CreditScore Pro{% endblock %}
+
+{% block content %}
+<section class="auth-section">
+    <div class="container">
+        <div class="auth-card glass" data-aos="fade-up">
+            <div class="admin-login-header">
+                <div class="admin-icon"><i class="fas fa-shield-alt"></i></div>
+                <h2>Espace Administrateur</h2>
+                <p>Accès réservé aux administrateurs autorisés</p>
+            </div>
+            <form method="POST" action="{{ url_for('admin_login') }}" class="auth-form-inner">
+                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                <div class="form-group">
+                    <label class="form-label"><i class="fas fa-user-shield"></i> Nom d'utilisateur</label>
+                    <input type="text" name="username" class="form-input" placeholder="admin" required autofocus>
+                </div>
+                <div class="form-group">
+                    <label class="form-label"><i class="fas fa-lock"></i> Mot de passe</label>
+                    <input type="password" name="password" class="form-input" placeholder="••••••••" required>
+                </div>
+                <button type="submit" class="btn btn-admin w-100">
+                    <i class="fas fa-sign-in-alt"></i> Accéder au panneau admin
+                </button>
+            </form>
+            <div style="text-align:center;margin-top:20px;">
+                <a href="{{ url_for('login') }}" style="color:var(--text-secondary);font-size:0.9rem;">
+                    <i class="fas fa-arrow-left"></i> Connexion client
+                </a>
+            </div>
+        </div>
+    </div>
+</section>
+
+<style>
+.auth-section { padding:80px 20px; min-height:80vh; display:flex; align-items:center; background:var(--bg-primary); }
+.auth-card { max-width:460px; margin:0 auto; width:100%; padding:50px 40px; border-radius:20px; }
+.admin-login-header { text-align:center; margin-bottom:35px; }
+.admin-icon { font-size:60px; color:#764ba2; margin-bottom:15px; }
+.admin-login-header h2 { font-family:var(--font-heading); margin-bottom:8px; color:var(--text-primary); }
+.admin-login-header p { color:var(--text-secondary); }
+.auth-form-inner { display:flex; flex-direction:column; gap:20px; }
+.form-group { display:flex; flex-direction:column; gap:8px; }
+.form-label { font-weight:500; color:var(--text-primary); font-size:0.9rem; display:flex; align-items:center; gap:8px; }
+.form-input { padding:12px 16px; border:1px solid var(--border-color,#ddd); border-radius:10px; background:var(--bg-primary); color:var(--text-primary); font-size:1rem; transition:border-color .3s; }
+.form-input:focus { outline:none; border-color:#764ba2; }
+.btn { padding:14px 24px; border-radius:10px; border:none; font-weight:600; cursor:pointer; transition:all .3s; display:flex; align-items:center; justify-content:center; gap:8px; font-size:1rem; }
+.btn-admin { background:linear-gradient(135deg,#667eea,#764ba2); color:white; }
+.btn-admin:hover { transform:translateY(-2px); box-shadow:0 5px 20px rgba(102,126,234,.4); }
+.w-100 { width:100%; }
+</style>
+{% endblock %}

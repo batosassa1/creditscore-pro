@@ -1,0 +1,362 @@
+{% extends "base.html" %}
+
+{% block title %}Historique des Simulations - {{ super() }}{% endblock %}
+
+{% block content %}
+<section class="history-public-section">
+    <div class="container">
+        <!-- Message principal -->
+        <div class="history-message" data-aos="fade-up">
+            <div class="message-icon">
+                <i class="fas fa-info-circle"></i>
+            </div>
+            <h1>Historique des Simulations</h1>
+            <p class="message-text">
+                Pour consulter l'historique de vos simulations, vous devez :
+            </p>
+            
+            <div class="steps-container">
+                <div class="step-card" data-aos="fade-up" data-aos-delay="100">
+                    <div class="step-number">1</div>
+                    <div class="step-icon">
+                        <i class="fas fa-user-plus"></i>
+                    </div>
+                    <h3>Créez un compte</h3>
+                    <p>Inscrivez-vous gratuitement pour accéder à toutes les fonctionnalités</p>
+                    <a href="/register" class="btn btn-step">
+                        <i class="fas fa-arrow-right"></i> M'inscrire
+                    </a>
+                </div>
+                
+                <div class="step-card" data-aos="fade-up" data-aos-delay="200">
+                    <div class="step-number">2</div>
+                    <div class="step-icon">
+                        <i class="fas fa-calculator"></i>
+                    </div>
+                    <h3>Faites des simulations</h3>
+                    <p>Complétez le formulaire d'évaluation pour obtenir votre score de crédit</p>
+                    <a href="/login" class="btn btn-step">
+                        <i class="fas fa-arrow-right"></i> Me connecter
+                    </a>
+                </div>
+                
+                <div class="step-card" data-aos="fade-up" data-aos-delay="300">
+                    <div class="step-number">3</div>
+                    <div class="step-icon">
+                        <i class="fas fa-history"></i>
+                    </div>
+                    <h3>Consultez votre historique</h3>
+                    <p>Retrouvez toutes vos simulations avec scores et recommandations</p>
+                    <div class="coming-soon">
+                        <i class="fas fa-lock"></i> Disponible après connexion
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Avantages -->
+        <div class="benefits-section" data-aos="fade-up">
+            <h2><i class="fas fa-star"></i> Pourquoi créer un compte ?</h2>
+            
+            <div class="benefits-grid">
+                <div class="benefit-card">
+                    <div class="benefit-icon">
+                        <i class="fas fa-chart-line"></i>
+                    </div>
+                    <h3>Suivi Personnalisé</h3>
+                    <p>Visualisez l'évolution de vos scores au fil du temps</p>
+                </div>
+                
+                <div class="benefit-card">
+                    <div class="benefit-icon">
+                        <i class="fas fa-history"></i>
+                    </div>
+                    <h3>Historique Complet</h3>
+                    <p>Accédez à toutes vos simulations précédentes</p>
+                </div>
+                
+                <div class="benefit-card">
+                    <div class="benefit-icon">
+                        <i class="fas fa-percentage"></i>
+                    </div>
+                    <h3>Statistiques</h3>
+                    <p>Calculez votre taux d'approbation moyen</p>
+                </div>
+                
+                <div class="benefit-card">
+                    <div class="benefit-icon">
+                        <i class="fas fa-lightbulb"></i>
+                    </div>
+                    <h3>Recommandations</h3>
+                    <p>Recevez des conseils personnalisés pour améliorer votre score</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- CTA Final -->
+        <div class="cta-section" data-aos="fade-up">
+            <h2>Prêt à commencer ?</h2>
+            <p>Créez votre compte maintenant et faites votre première simulation</p>
+            <div class="cta-buttons">
+                <a href="/register" class="btn btn-primary-large">
+                    <i class="fas fa-user-plus"></i> Créer mon compte gratuitement
+                </a>
+                <a href="/login" class="btn btn-secondary-large">
+                    <i class="fas fa-sign-in-alt"></i> J'ai déjà un compte
+                </a>
+            </div>
+        </div>
+    </div>
+</section>
+
+<style>
+.history-public-section {
+    padding: 60px 20px;
+    min-height: 80vh;
+    background: var(--bg-primary);
+}
+
+.history-message {
+    text-align: center;
+    max-width: 900px;
+    margin: 0 auto 60px;
+}
+
+.message-icon {
+    font-size: 60px;
+    color: var(--accent-primary);
+    margin-bottom: 20px;
+    animation: pulse 2s infinite;
+}
+
+.message-text {
+    font-size: 20px;
+    color: var(--text-secondary);
+    margin: 30px 0;
+}
+
+.steps-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 30px;
+    margin-top: 40px;
+}
+
+.step-card {
+    background: var(--card-bg);
+    padding: 40px 30px;
+    border-radius: 20px;
+    box-shadow: var(--shadow-md);
+    position: relative;
+    transition: transform 0.3s;
+}
+
+.step-card:hover {
+    transform: translateY(-10px);
+}
+
+.step-number {
+    position: absolute;
+    top: -15px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 40px;
+    height: 40px;
+    background: var(--accent-primary);
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 18px;
+}
+
+.step-icon {
+    font-size: 50px;
+    color: var(--accent-secondary);
+    margin-bottom: 20px;
+}
+
+.step-card h3 {
+    font-family: var(--font-heading);
+    font-size: 22px;
+    margin-bottom: 15px;
+    color: var(--text-primary);
+}
+
+.step-card p {
+    color: var(--text-secondary);
+    margin-bottom: 25px;
+    line-height: 1.6;
+}
+
+.btn-step {
+    background: var(--gradient-primary);
+    color: white;
+    padding: 12px 24px;
+    border-radius: 10px;
+    text-decoration: none;
+    font-weight: 600;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    transition: all 0.3s;
+}
+
+.btn-step:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md);
+}
+
+.coming-soon {
+    background: var(--bg-secondary);
+    padding: 12px 20px;
+    border-radius: 10px;
+    color: var(--text-secondary);
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 14px;
+}
+
+.benefits-section {
+    text-align: center;
+    margin: 80px 0;
+}
+
+.benefits-section h2 {
+    font-family: var(--font-heading);
+    font-size: 32px;
+    color: var(--accent-primary);
+    margin-bottom: 40px;
+}
+
+.benefits-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 25px;
+}
+
+.benefit-card {
+    background: var(--card-bg);
+    padding: 30px;
+    border-radius: 15px;
+    box-shadow: var(--shadow-sm);
+    transition: all 0.3s;
+}
+
+.benefit-card:hover {
+    transform: translateY(-5px);
+    box-shadow: var(--shadow-md);
+}
+
+.benefit-icon {
+    font-size: 40px;
+    color: var(--accent-primary);
+    margin-bottom: 15px;
+}
+
+.benefit-card h3 {
+    font-size: 18px;
+    margin-bottom: 10px;
+    color: var(--text-primary);
+}
+
+.benefit-card p {
+    color: var(--text-secondary);
+    font-size: 14px;
+}
+
+.cta-section {
+    text-align: center;
+    background: var(--gradient-primary);
+    padding: 60px 40px;
+    border-radius: 20px;
+    color: white;
+    margin-top: 60px;
+}
+
+.cta-section h2 {
+    font-family: var(--font-heading);
+    font-size: 36px;
+    margin-bottom: 15px;
+}
+
+.cta-section > p {
+    font-size: 18px;
+    margin-bottom: 30px;
+    opacity: 0.95;
+}
+
+.cta-buttons {
+    display: flex;
+    gap: 20px;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.btn-primary-large {
+    background: white;
+    color: var(--accent-primary);
+    padding: 16px 32px;
+    border-radius: 12px;
+    text-decoration: none;
+    font-weight: 700;
+    font-size: 16px;
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    transition: all 0.3s;
+}
+
+.btn-primary-large:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+}
+
+.btn-secondary-large {
+    background: transparent;
+    color: white;
+    padding: 16px 32px;
+    border-radius: 12px;
+    text-decoration: none;
+    font-weight: 700;
+    font-size: 16px;
+    border: 2px solid white;
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    transition: all 0.3s;
+}
+
+.btn-secondary-large:hover {
+    background: white;
+    color: var(--accent-primary);
+    transform: translateY(-3px);
+}
+
+@keyframes pulse {
+    0%, 100% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.1);
+    }
+}
+
+@media (max-width: 768px) {
+    .steps-container {
+        grid-template-columns: 1fr;
+    }
+    
+    .cta-buttons {
+        flex-direction: column;
+    }
+    
+    .cta-section h2 {
+        font-size: 28px;
+    }
+}
+</style>
+{% endblock %}

@@ -1,0 +1,14 @@
+services:
+  - type: web
+    name: creditscore-pro
+    runtime: python
+    plan: free
+    buildCommand: pip install -r requirements.txt
+    startCommand: gunicorn app:app
+    envVars:
+      # Python 3.12 obligatoire : le modele ML exige scikit-learn 1.3.2,
+      # incompatible avec Python 3.13
+      - key: PYTHON_VERSION
+        value: 3.12.10
+      - key: SECRET_KEY
+        generateValue: true

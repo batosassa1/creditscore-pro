@@ -1,0 +1,12 @@
+# Environnements et caches Python
+__pycache__/
+*.pyc
+.venv/
+venv/
+
+# Base de données locale (recréée automatiquement au démarrage)
+instance/
+
+# Fichiers systèmes
+.DS_Store
+Thumbs.db

@@ -1,0 +1,151 @@
+{% extends "base.html" %}
+
+{% block title %}Mon Profil - {{ super() }}{% endblock %}
+
+{% block content %}
+<section class="profile-section">
+    <div class="container">
+        <div class="profile-card glass" data-aos="fade-up">
+            <div class="profile-header">
+                <div class="profile-avatar">
+                    <i class="fas fa-user-circle"></i>
+                </div>
+                <div class="profile-info">
+                    <h1>{{ user.first_name }} {{ user.last_name }}</h1>
+                    <p class="email">{{ user.email }}</p>
+                    <span class="badge badge-info">Client CreditScore Pro</span>
+                </div>
+            </div>
+
+            <form method="POST" action="{{ url_for('profile') }}" class="profile-form">
+                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="first_name" class="form-label">
+                            <i class="fas fa-user"></i> Prénom
+                        </label>
+                        <input type="text" id="first_name" name="first_name" class="form-input" value="{{ user.first_name }}" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="last_name" class="form-label">
+                            <i class="fas fa-user"></i> Nom
+                        </label>
+                        <input type="text" id="last_name" name="last_name" class="form-input" value="{{ user.last_name }}" required>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="email_display" class="form-label">
+                        <i class="fas fa-envelope"></i> Email (Non modifiable)
+                    </label>
+                    <input type="email" id="email_display" class="form-input" value="{{ user.email }}" disabled>
+                </div>
+
+                <div class="form-group">
+                    <label for="phone" class="form-label">
+                        <i class="fas fa-phone"></i> Téléphone
+                    </label>
+                    <input type="text" id="phone" name="phone" class="form-input" value="{{ user.phone or '' }}" placeholder="+223 XX XX XX XX">
+                </div>
+
+                <div class="form-actions">
+                    <button type="submit" class="btn btn-primary btn-animated">
+                        <i class="fas fa-save"></i> Enregistrer les modifications
+                    </button>
+                    <a href="{{ url_for('dashboard') }}" class="btn btn-secondary">
+                        <i class="fas fa-arrow-left"></i> Retour au Dashboard
+                    </a>
+                </div>
+            </form>
+            
+            <div class="profile-footer">
+                <p>Membre depuis le {{ user.created_at.strftime('%d %B %Y') }}</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<style>
+.profile-section {
+    padding: var(--spacing-xl) 0;
+    min-height: 80vh;
+    background: var(--bg-primary);
+}
+
+.profile-card {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 40px;
+    border-radius: var(--radius-lg);
+}
+
+.profile-header {
+    display: flex;
+    align-items: center;
+    gap: 30px;
+    margin-bottom: 40px;
+    padding-bottom: 30px;
+    border-bottom: 1px solid var(--glass-border);
+}
+
+.profile-avatar {
+    font-size: 80px;
+    color: var(--accent-primary);
+}
+
+.profile-info h1 {
+    font-family: var(--font-heading);
+    font-size: 2rem;
+    color: var(--text-primary);
+    margin-bottom: 5px;
+}
+
+.profile-info .email {
+    color: var(--text-secondary);
+    font-size: 1.1rem;
+    margin-bottom: 10px;
+}
+
+.profile-form {
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+}
+
+.form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+}
+
+.form-actions {
+    display: flex;
+    gap: 15px;
+    margin-top: 20px;
+}
+
+.profile-footer {
+    margin-top: 40px;
+    text-align: center;
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+    opacity: 0.8;
+}
+
+@media (max-width: 768px) {
+    .profile-header {
+        flex-direction: column;
+        text-align: center;
+    }
+    
+    .form-row {
+        grid-template-columns: 1fr;
+    }
+    
+    .form-actions {
+        flex-direction: column;
+    }
+}
+</style>
+{% endblock %}
