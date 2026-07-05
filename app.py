@@ -255,7 +255,11 @@ class User(UserMixin, db.Model):
         return check_password_hash(self.password_hash, password)
 
     def get_id(self):
-        return f'u_{self.id}'
+        # Le fragment d'empreinte rend le cookie de session unique a CE compte :
+        # apres une reinitialisation de la base (hebergement ephemere), un vieux
+        # cookie ne peut plus ouvrir le compte d'un autre utilisateur qui aurait
+        # recu le meme numero.
+        return f'u_{self.id}_{self.password_hash[-12:]}'
 
     def generate_reset_token(self):
         self.reset_token = secrets.token_urlsafe(32)
@@ -284,7 +288,7 @@ class Admin(UserMixin, db.Model):
         return check_password_hash(self.password_hash, password)
 
     def get_id(self):
-        return f'a_{self.id}'
+        return f'a_{self.id}_{self.password_hash[-12:]}'
 
 
 class Simulation(db.Model):
@@ -316,17 +320,26 @@ class SupportTicket(db.Model):
 # ── Login manager ─────────────────────────────────────────────────────────────
 @login_manager.user_loader
 def load_user(user_id):
-    if not user_id or '_' not in user_id:
+    # Format du jeton : u_<id>_<fragment d'empreinte> (idem a_ pour les admins).
+    # Le fragment doit correspondre au compte actuel : un cookie emis avant une
+    # reinitialisation de la base est ainsi refuse au lieu d'ouvrir le compte
+    # d'un autre utilisateur ayant recupere le meme id.
+    if not user_id:
         return None
-    prefix, _, raw_id = user_id.partition('_')
+    parts = user_id.split('_')
+    if len(parts) != 3:
+        return None
+    prefix, raw_id, jeton = parts
     try:
         int_id = int(raw_id)
     except ValueError:
         return None
-    if prefix == 'u':
-        return db.session.get(User, int_id)
-    if prefix == 'a':
-        return db.session.get(Admin, int_id)
+    modele = User if prefix == 'u' else Admin if prefix == 'a' else None
+    if modele is None:
+        return None
+    compte = db.session.get(modele, int_id)
+    if compte and compte.password_hash[-12:] == jeton:
+        return compte
     return None
 
 @login_manager.unauthorized_handler
