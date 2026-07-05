@@ -409,6 +409,94 @@ def _safe_int(value, default=0):
     return int(_safe_float(value, default))
 
 
+# ── Explicabilité SHAP ────────────────────────────────────────────────────────
+# Pour chaque prédiction, on identifie les variables qui ont le plus pesé sur
+# la décision (valeurs de Shapley calculées par TreeExplainer). Les 28 colonnes
+# techniques sont regroupées en familles lisibles par le client.
+_shap_explainer = None
+
+_FAMILLES_VARIABLES = {
+    'payment_status': {'fr': 'Historique de retards de paiement', 'en': 'Payment delay history'},
+    'bill_statement': {'fr': 'Niveau des factures récentes', 'en': 'Recent bill amounts'},
+    'previous_payment': {'fr': 'Montants remboursés', 'en': 'Amounts repaid'},
+    'utilisation_credit': {'fr': "Taux d'utilisation du crédit", 'en': 'Credit utilization rate'},
+    'ratio_remboursement': {'fr': 'Ratio de remboursement', 'en': 'Repayment ratio'},
+    'retard_max': {'fr': 'Retard maximum', 'en': 'Maximum delay'},
+    'nb_mois_retard': {'fr': 'Nombre de mois en retard', 'en': 'Months in arrears'},
+    'tendance_retard': {'fr': 'Tendance des retards', 'en': 'Delay trend'},
+    'limit_bal': {'fr': 'Montant du crédit demandé', 'en': 'Requested credit amount'},
+    'age': {'fr': 'Âge', 'en': 'Age'},
+    'sex': {'fr': 'Genre', 'en': 'Gender'},
+    'education': {'fr': "Niveau d'éducation", 'en': 'Education level'},
+    'marriage': {'fr': 'Situation matrimoniale', 'en': 'Marital status'},
+}
+
+
+def _famille_de(nom_colonne):
+    """Rattache une colonne transformée (ex: 'num__payment_status_sep',
+    'cat__education_Graduate school') à sa famille lisible."""
+    base = nom_colonne.split('__', 1)[-1]
+    for prefixe in _FAMILLES_VARIABLES:
+        if base.startswith(prefixe):
+            return prefixe
+    return None
+
+
+def compute_explanation(model, features, lang='fr'):
+    """Retourne les 4 facteurs qui ont le plus influencé la décision,
+    avec leur sens (augmente ou réduit le risque) et leur poids relatif.
+    Ne casse jamais la prédiction : en cas de problème, renvoie []."""
+    global _shap_explainer
+    try:
+        import shap
+        pre = model.named_steps['preprocessor']
+        classifieur = model.named_steps['model']
+        if _shap_explainer is None:
+            _shap_explainer = shap.TreeExplainer(classifieur)
+        X_t = pre.transform(features)
+        if hasattr(X_t, 'toarray'):
+            X_t = X_t.toarray()
+        valeurs = _shap_explainer.shap_values(X_t)
+        # Binaire : certaines versions renvoient une liste [classe0, classe1]
+        if isinstance(valeurs, list):
+            valeurs = valeurs[-1]
+        ligne = valeurs[0]
+        noms = pre.get_feature_names_out()
+
+        agregats = {}
+        for nom, val in zip(noms, ligne):
+            famille = _famille_de(nom)
+            if famille:
+                agregats[famille] = agregats.get(famille, 0.0) + float(val)
+
+        total = sum(abs(v) for v in agregats.values()) or 1.0
+        cle_langue = 'en' if lang == 'en' else 'fr'
+        facteurs = []
+        for famille, val in sorted(agregats.items(), key=lambda kv: abs(kv[1]), reverse=True)[:4]:
+            poids = round(100 * abs(val) / total)
+            if poids < 5:
+                continue
+            # SHAP positif = pousse vers le défaut = fait baisser le score
+            if val > 0:
+                effet = 'increases_risk' if cle_langue == 'en' else 'augmente le risque'
+                effet_code = 'negative'
+            else:
+                effet = 'reduces_risk' if cle_langue == 'en' else 'réduit le risque'
+                effet_code = 'positive'
+            if cle_langue == 'en':
+                effet = 'increases risk' if effet_code == 'negative' else 'reduces risk'
+            facteurs.append({
+                'label': _FAMILLES_VARIABLES[famille][cle_langue],
+                'effet': effet,
+                'sens': effet_code,
+                'poids': poids,
+            })
+        return facteurs
+    except Exception as e:
+        print('⚠️  Explication SHAP indisponible :', e)
+        return []
+
+
 def predict_score(data, lang='fr'):
     model = get_model()
 
@@ -479,8 +567,10 @@ def predict_score(data, lang='fr'):
         }])
         proba = model.predict_proba(features)[0]
         score = round(float(proba[0]) * 100, 1)
+        explanation = compute_explanation(model, features, lang)
     else:
         score = _demo_score(pay_0, pay_2, pay_3, monthly_income, loan_amount_fcfa, age)
+        explanation = []
 
     tr = TRANSLATIONS.get(lang, TRANSLATIONS['fr'])
 
@@ -525,6 +615,7 @@ def predict_score(data, lang='fr'):
         'eligibility_label': eligibility_label,
         'details': details,
         'recommendations': recs,
+        'explanation': explanation,
     }
 
 
@@ -1089,7 +1180,8 @@ def predict():
                         'eligibility_label': result['eligibility_label'],
                         'max_amount': max_amount,
                         'details': result['details'],
-                        'recommendations': result['recommendations']})
+                        'recommendations': result['recommendations'],
+                        'explanation': result.get('explanation', [])})
     except Exception as e:
         # Affiche l'erreur complète dans le terminal pour diagnostic,
         # même en mode debug=False (sinon l'erreur reste invisible).

@@ -95,6 +95,13 @@
             </div>
         </div>
 
+        <!-- Explication SHAP : pourquoi ce score -->
+        <div class="recommendations-section" id="explanationSection" data-aos="fade-up" data-aos-delay="350" style="display:none;">
+            <h2><i class="fas fa-magnifying-glass-chart"></i> {% if lang == 'en' %}Why this score?{% else %}Pourquoi ce score ?{% endif %}</h2>
+            <p class="explanation-intro">{% if lang == 'en' %}The factors that most influenced the model's decision (SHAP analysis):{% else %}Les facteurs qui ont le plus influencé la décision du modèle (analyse SHAP) :{% endif %}</p>
+            <div class="explanation-list" id="explanationList"></div>
+        </div>
+
         <!-- Recommendations -->
         <div class="recommendations-section" data-aos="fade-up" data-aos-delay="400">
             <h2><i class="fas fa-lightbulb"></i> {% if lang == 'en' %}Personalized Recommendations{% else %}Recommandations Personnalisées{% endif %}</h2>

@@ -297,6 +297,27 @@ if (!result) {
         }).join('');
     }
 
+    // ── Explication SHAP : pourquoi ce score ─────────────────────────────────
+    const explanationSection = document.getElementById('explanationSection');
+    const explanationList = document.getElementById('explanationList');
+    if (explanationSection && explanationList && result.explanation && result.explanation.length > 0) {
+        explanationSection.style.display = '';
+        explanationList.innerHTML = result.explanation.map(function(f) {
+            const positif = f.sens === 'positive';
+            const couleur = positif ? 'var(--accent-primary, #1a5c38)' : '#c0392b';
+            const icone = positif ? 'fa-arrow-trend-up' : 'fa-arrow-trend-down';
+            return '<div class="explanation-item">'
+                + '<div class="explanation-header">'
+                + '<span class="explanation-label"><i class="fas ' + icone + '" style="color:' + couleur + ';margin-right:8px;"></i>' + f.label + '</span>'
+                + '<span class="explanation-effect" style="color:' + couleur + ';">' + f.effet + ' · ' + f.poids + '%</span>'
+                + '</div>'
+                + '<div class="explanation-bar-bg">'
+                + '<div class="explanation-bar" style="width:' + Math.min(100, f.poids) + '%;background:' + couleur + ';"></div>'
+                + '</div>'
+                + '</div>';
+        }).join('');
+    }
+
     // ── Téléchargement du rapport PDF ────────────────────────────────────────
     const pdfBtn = document.getElementById('downloadPdfBtn');
     if (pdfBtn) {

@@ -706,3 +706,13 @@ a { color: var(--accent-primary); text-decoration: none; }
 @media (max-width: 768px) {
     .mission-grid { grid-template-columns: 1fr; }
 }
+
+/* ── Explication SHAP (Pourquoi ce score ?) ── */
+.explanation-intro { color: var(--text-secondary); margin-bottom: 24px; }
+.explanation-list { display: flex; flex-direction: column; gap: 18px; max-width: 720px; }
+.explanation-item { background: var(--card-bg); padding: 18px 22px; border-radius: 14px; box-shadow: var(--shadow); border: 1px solid var(--border-color); }
+.explanation-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; gap: 12px; flex-wrap: wrap; }
+.explanation-label { font-weight: 600; color: var(--text-primary); }
+.explanation-effect { font-size: .88rem; font-weight: 600; white-space: nowrap; }
+.explanation-bar-bg { height: 8px; background: var(--bg-secondary); border-radius: 4px; overflow: hidden; }
+.explanation-bar { height: 100%; border-radius: 4px; transition: width .8s ease; }
