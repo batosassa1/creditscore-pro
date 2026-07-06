@@ -13,9 +13,10 @@ Ouvrez simplement l'adresse suivante dans un navigateur (ordinateur ou télépho
 
 **https://creditscore-pro-wsos.onrender.com**
 
-Remarque : l'hébergement gratuit met l'application en veille après 15 minutes
+Remarque : l'hébergement gratuit met le serveur en veille après 15 minutes
 d'inactivité. Si la page met du temps à s'ouvrir (jusqu'à une minute), c'est
-qu'elle se réveille ; patientez puis rechargez.
+qu'il se réveille ; patientez puis rechargez. Vos données (compte, simulations)
+sont conservées dans une base persistante et ne sont jamais perdues.
 
 ### En local (sur l'ordinateur du projet)
 
@@ -105,10 +106,11 @@ Le modèle a été entraîné sur des données en dollars taïwanais (TWD). L'ap
 convertit automatiquement vos montants en F CFA vers cette échelle : vous n'avez
 rien à faire.
 
-**Mon compte en ligne a disparu.**
-L'hébergement gratuit réinitialise la base de données à chaque mise à jour de
-l'application. Recréez simplement votre compte. (En production réelle, une base
-persistante serait utilisée : voir chapitre 4 du mémoire.)
+**Mon compte est-il conservé ?**
+Oui. Les comptes et l'historique des simulations sont stockés dans une base
+PostgreSQL persistante (Neon), indépendante de l'hébergeur : ils survivent aux
+redémarrages et aux mises en veille. Si une page restée ouverte très longtemps
+refuse la connexion, rechargez-la (F5) : cela régénère le jeton de sécurité.
 
 **La page « mot de passe oublié » n'envoie pas d'email.**
 Par défaut l'application est en mode démonstration : le lien de réinitialisation
@@ -129,7 +131,8 @@ Le bouton lune/soleil bascule entre thème clair et thème sombre.
 
 | Symptôme | Cause probable | Solution |
 |---|---|---|
-| La page en ligne met une minute à s'ouvrir | Application en veille (hébergement gratuit) | Patienter puis recharger |
+| La page en ligne met une minute à s'ouvrir | Serveur en veille (hébergement gratuit) | Patienter puis recharger |
+| « Session expirée » après une longue inactivité | Jeton de sécurité périmé (serveur réveillé) | Recharger la page (F5) puis réessayer |
 | « Mode démo dégradé » sur le dashboard admin | Modèle ML non chargé (versions Python) | Réinstaller avec `pip install -r requirements.txt` sous Python 3.12 |
 | Erreur au calcul du score | Session expirée | Se reconnecter puis réessayer |
 | Les caractères accentués s'affichent mal dans la console locale | Encodage Windows | Lancer via `start.bat` (active l'UTF-8) |
