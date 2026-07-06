@@ -16,6 +16,10 @@ services:
       # onglet Environment : jamais dans le code)
       - key: ADMIN_PASSWORD
         sync: false
+      # Base PostgreSQL externe persistante (chaine de connexion Neon,
+      # a coller dans le tableau de bord Render, onglet Environment)
+      - key: DATABASE_URL
+        sync: false
       # Envoi de vrais emails (mot de passe oublie) : renseigner un compte Gmail
       # et un "mot de passe d'application" Google (voir README.md). Optionnel :
       # sans ces variables, l'app reste en mode demo (lien affiche a l'ecran).

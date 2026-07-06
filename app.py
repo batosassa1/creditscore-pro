@@ -31,7 +31,22 @@ if app.config['SECRET_KEY'] == SECRET_KEY_FALLBACK:
 _basedir = os.path.abspath(os.path.dirname(__file__))
 _instance_dir = os.path.join(_basedir, 'instance')
 os.makedirs(_instance_dir, exist_ok=True)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + os.path.join(_instance_dir, 'credit_scoring.db')
+# Base de donnees : en production, definir DATABASE_URL (PostgreSQL externe,
+# ex. Neon) pour que comptes et historiques survivent aux redemarrages de
+# l'hebergeur (le disque de l'offre gratuite Render est ephemere : il est
+# remis a neuf a CHAQUE reveil, pas seulement a chaque deploiement).
+# Sans DATABASE_URL, repli sur SQLite local (developpement).
+_database_url = os.environ.get('DATABASE_URL', '')
+if _database_url.startswith('postgres://'):
+    # Certains fournisseurs donnent l'ancien schema 'postgres://' que
+    # SQLAlchemy ne reconnait plus.
+    _database_url = _database_url.replace('postgres://', 'postgresql://', 1)
+app.config['SQLALCHEMY_DATABASE_URI'] = _database_url or (
+    'sqlite:///' + os.path.join(_instance_dir, 'credit_scoring.db'))
+if _database_url:
+    print('🗄️  Base de données externe PostgreSQL configurée (persistante).')
+else:
+    print('🗄️  Base SQLite locale (les données ne survivent pas aux redémarrages en production).')
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['WTF_CSRF_ENABLED'] = True
 

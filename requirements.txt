@@ -16,6 +16,8 @@ joblib>=1.1.0,<1.3.0
 setuptools
 reportlab>=4.0.0
 gunicorn
+# Pilote PostgreSQL (base externe persistante en production, ex. Neon)
+psycopg2-binary
 # Explicabilite des predictions (analyse SHAP). Versions figees pour rester
 # compatibles avec numpy 1.26.4 / scikit-learn 1.3.2 (voir avertissement en tete).
 shap==0.46.0
