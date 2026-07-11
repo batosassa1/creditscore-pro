@@ -839,35 +839,39 @@ def results_pdf():
         story.append(Spacer(1, 10))
 
         # ── Montants disponibles ──────────────────────────────────────────
-        story.append(Paragraph(
-            'Montants Disponibles' if not is_en else 'Available Amounts', h2_style))
+        # Masque en cas de rejet : afficher un "montant recommande" apres un
+        # refus de credit serait contradictoire pour l'utilisateur (meme
+        # logique que la page de resultats, voir results.js).
+        if eligibility != 'rejected':
+            story.append(Paragraph(
+                'Montants Disponibles' if not is_en else 'Available Amounts', h2_style))
 
-        def fmt_cfa(v):
-            return f'{round(_safe_float(v)):,} F CFA'.replace(',', ' ')
+            def fmt_cfa(v):
+                return f'{round(_safe_float(v)):,} F CFA'.replace(',', ' ')
 
-        amount_table_data = [
-            ['Minimum' if not is_en else 'Minimum',
-             'Recommandé' if not is_en else 'Recommended',
-             'Maximum' if not is_en else 'Maximum'],
-            [fmt_cfa(max_amount.get('min')), fmt_cfa(max_amount.get('recommended')), fmt_cfa(max_amount.get('max'))]
-        ]
-        amount_table = Table(amount_table_data, colWidths=[150, 150, 150])
-        amount_table.setStyle(TableStyle([
-            ('BACKGROUND', (0, 0), (-1, 0), GREEN_DARK),
-            ('TEXTCOLOR', (0, 0), (-1, 0), HexColor('#ffffff')),
-            ('FONTNAME', (0, 0), (-1, 0), 'Helvetica-Bold'),
-            ('FONTSIZE', (0, 0), (-1, -1), 10),
-            ('ALIGN', (0, 0), (-1, -1), 'CENTER'),
-            ('BACKGROUND', (1, 1), (1, 1), HexColor('#eaf7ee')),
-            ('GRID', (0, 0), (-1, -1), 0.5, HexColor('#d4e8d8')),
-            ('TOPPADDING', (0, 0), (-1, -1), 8),
-            ('BOTTOMPADDING', (0, 0), (-1, -1), 8),
-        ]))
-        story.append(amount_table)
-        story.append(Spacer(1, 6))
-        monthly = fmt_cfa(max_amount.get('monthly_payment'))
-        monthly_label = 'Mensualité estimée' if not is_en else 'Estimated monthly payment'
-        story.append(Paragraph(f'<b>{monthly_label} :</b> {monthly}/mois' if not is_en else f'<b>{monthly_label}:</b> {monthly}/month', body_style))
+            amount_table_data = [
+                ['Minimum' if not is_en else 'Minimum',
+                 'Recommandé' if not is_en else 'Recommended',
+                 'Maximum' if not is_en else 'Maximum'],
+                [fmt_cfa(max_amount.get('min')), fmt_cfa(max_amount.get('recommended')), fmt_cfa(max_amount.get('max'))]
+            ]
+            amount_table = Table(amount_table_data, colWidths=[150, 150, 150])
+            amount_table.setStyle(TableStyle([
+                ('BACKGROUND', (0, 0), (-1, 0), GREEN_DARK),
+                ('TEXTCOLOR', (0, 0), (-1, 0), HexColor('#ffffff')),
+                ('FONTNAME', (0, 0), (-1, 0), 'Helvetica-Bold'),
+                ('FONTSIZE', (0, 0), (-1, -1), 10),
+                ('ALIGN', (0, 0), (-1, -1), 'CENTER'),
+                ('BACKGROUND', (1, 1), (1, 1), HexColor('#eaf7ee')),
+                ('GRID', (0, 0), (-1, -1), 0.5, HexColor('#d4e8d8')),
+                ('TOPPADDING', (0, 0), (-1, -1), 8),
+                ('BOTTOMPADDING', (0, 0), (-1, -1), 8),
+            ]))
+            story.append(amount_table)
+            story.append(Spacer(1, 6))
+            monthly = fmt_cfa(max_amount.get('monthly_payment'))
+            monthly_label = 'Mensualité estimée' if not is_en else 'Estimated monthly payment'
+            story.append(Paragraph(f'<b>{monthly_label} :</b> {monthly}/mois' if not is_en else f'<b>{monthly_label}:</b> {monthly}/month', body_style))
 
         # ── Recommandations ────────────────────────────────────────────────
         if recommendations:
@@ -1443,4 +1447,8 @@ init_db()
 if __name__ == '__main__':
     port = int(os.environ.get('PORT', 5000))
     print(f'🚀 CreditScore Pro démarre sur http://localhost:{port}')
-    app.run(debug=False, host='0.0.0.0', port=port)
+    # threaded=True : le serveur de developpement Flask est mono-thread par
+    # defaut et traite une requete a la fois, ce qui peut faire "geler" un
+    # appel /predict si une autre requete (ex. /api/stats) est deja en cours.
+    # Sans effet en production (gunicorn gere deja la concurrence).
+    app.run(debug=False, host='0.0.0.0', port=port, threaded=True)

@@ -241,7 +241,13 @@ if (!result) {
     }
 
     // ── Montants ───────────────────────────────────────────────────────────
-    if (result.max_amount) {
+    // Section masquee en cas de rejet : afficher un "montant recommande"
+    // apres un refus de credit est contradictoire pour l'utilisateur.
+    var amountSection = document.getElementById('amountSection');
+    if (result.eligibility === 'rejected') {
+        if (amountSection) amountSection.style.display = 'none';
+    } else if (result.max_amount) {
+        if (amountSection) amountSection.style.display = '';
         var el = function(id) { return document.getElementById(id); };
         if (el('minAmount'))         el('minAmount').textContent         = formatCFA(result.max_amount.min);
         if (el('recommendedAmount')) el('recommendedAmount').textContent = formatCFA(result.max_amount.recommended);

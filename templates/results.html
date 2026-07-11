@@ -35,8 +35,9 @@
             </div>
         </div>
 
-        <!-- Amount Information -->
-        <div class="amount-section" data-aos="fade-up" data-aos-delay="200">
+        <!-- Amount Information : masquee si le dossier est rejete (afficher un
+             montant "recommande" apres un refus serait contradictoire) -->
+        <div class="amount-section" id="amountSection" data-aos="fade-up" data-aos-delay="200">
             <h2><i class="fas fa-coins"></i> {% if lang == 'en' %}Available Amounts{% else %}Montants Disponibles{% endif %}</h2>
             <div class="amount-grid">
                 <div class="amount-card">
